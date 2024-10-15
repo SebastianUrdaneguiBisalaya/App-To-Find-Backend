@@ -1,14 +1,14 @@
-// // Call to Prisma Client
-// import { PrismaClient } from '@prisma/client';
+// Call to Prisma Client
+import { PrismaClient } from '@prisma/client';
 
-// export const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
-// export const databaseConnect = async () => {
-//   try {
-//     await prisma.$connect();
-//     console.log('Connected to the database');
-//   } catch (error) {
-//     console.error('Unable to connect to the database');
-//     console.error(error);
-//   }
-// };
+export const databaseConnect = async () => {
+  try {
+    await prisma.$connect();
+    console.log('Connected to the database');
+  } catch (error) {
+    console.error('Unable to connect to the database');
+    console.error(error);
+  }
+};
