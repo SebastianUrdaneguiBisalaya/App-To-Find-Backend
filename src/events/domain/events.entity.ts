@@ -35,11 +35,11 @@ export interface ThisWeekEvents
     | 'event_hour'
     | 'event_hour'
     | 'event_latitude'
-    | 'event_longitue'
+    | 'event_longitude'
     | 'event_capicity'
     | 'event_description'
   > {
-  event_price: number;
+  event_price: number | undefined;
 }
 
 export interface UpcomingEvents
@@ -49,9 +49,9 @@ export interface UpcomingEvents
     | 'event_hour'
     | 'event_hour'
     | 'event_latitude'
-    | 'event_longitue'
+    | 'event_longitude'
     | 'event_capicity'
     | 'event_description'
   > {
-  event_price: number;
+  event_price: number | undefined;
 }

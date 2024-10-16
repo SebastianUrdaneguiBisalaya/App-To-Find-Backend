@@ -5,7 +5,7 @@ import {
 } from './events.entity';
 
 export interface EventsRepository {
-  getTrendingEvents(): Promise<TrendingEvents[]>;
-  getThisWeekEvents(): Promise<ThisWeekEvents[]>;
-  getUpcomingEvents(): Promise<UpcomingEvents[]>;
+  getTrendingEvents(limit: number, offset: number): Promise<TrendingEvents[]>;
+  getThisWeekEvents(limit: number, offset: number): Promise<ThisWeekEvents[]>;
+  getUpcomingEvents(limit: number, offset: number): Promise<UpcomingEvents[]>;
 }
