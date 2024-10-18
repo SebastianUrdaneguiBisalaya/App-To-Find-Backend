@@ -15,17 +15,17 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserById = async (req: Request, res: Response) => {
-  const { user_id } = req.params;
+export const getUserByEmail = async (req: Request, res: Response) => {
+  const { user_email } = req.params;
 
   try {
-    const user = await eventService.getUserById(repository, user_id);
+    const user = await eventService.getUserByEmail(repository, user_email);
     if (user) {
       res.json(user);
     } else {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: `Unable to get user by ID: ${error}` });
+    res.status(500).json({ message: `Unable to get user by email: ${error}` });
   }
 };

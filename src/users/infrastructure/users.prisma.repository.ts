@@ -13,15 +13,15 @@ export const projectPrismaRepository: UsersRepository = {
     }
   },
 
-  async getUserById(user_id: string): Promise<User | null> {
+  async getUserByEmail(user_email: string): Promise<User | null> {
     try {
-      const user = await prisma.user.findUnique({
-        where: { user_id },
+      const user = await prisma.user.findFirstOrThrow({
+        where: { user_email },
       });
       return user;
     } catch (error) {
-      console.error('Error fetching user by ID:', error);
-      throw new Error('Could not fetch user by ID');
+      console.error('Error fetching user by email:', error);
+      throw new Error('Could not fetch user by email');
     }
   },
 };

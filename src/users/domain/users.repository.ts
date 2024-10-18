@@ -7,5 +7,5 @@ export interface UsersRepository {
 }
 
 export interface UsersRepository {
-  getUserById(user_id: string): Promise<User | null>;
+  getUserByEmail(user_email: string): Promise<User | null>;
 }

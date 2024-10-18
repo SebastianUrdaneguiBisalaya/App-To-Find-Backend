@@ -10,9 +10,9 @@ export const getUsers = (
   }
 };
 
-export const getUserById = (usersRepository: UsersRepository, user_id: string) => {
+export const getUserByEmail = (usersRepository: UsersRepository, user_email: string) => {
   try {
-    return usersRepository.getUserById(user_id);
+    return usersRepository.getUserByEmail(user_email);
   } catch (error) {
     throw new Error(`Unable to get user by ID: ${error}`);
   }
