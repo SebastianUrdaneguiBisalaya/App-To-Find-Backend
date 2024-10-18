@@ -12,4 +12,16 @@ export const projectPrismaRepository: UsersRepository = {
       throw new Error('Could not fetch users');
     }
   },
+
+  async getUserById(user_id: string): Promise<User | null> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { user_id },
+      });
+      return user;
+    } catch (error) {
+      console.error('Error fetching user by ID:', error);
+      throw new Error('Could not fetch user by ID');
+    }
+  },
 };

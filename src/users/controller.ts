@@ -14,3 +14,18 @@ export const getUsers = async (req: Request, res: Response) => {
     throw new Error(`Unable to get users ${error}`);
   }
 };
+
+export const getUserById = async (req: Request, res: Response) => {
+  const { user_id } = req.params;
+
+  try {
+    const user = await eventService.getUserById(repository, user_id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `Unable to get user by ID: ${error}` });
+  }
+};

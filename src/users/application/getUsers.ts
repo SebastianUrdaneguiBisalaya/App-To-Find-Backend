@@ -9,3 +9,11 @@ export const getUsers = (
     throw new Error(`Unnable to get users ${error}`);
   }
 };
+
+export const getUserById = (usersRepository: UsersRepository, user_id: string) => {
+  try {
+    return usersRepository.getUserById(user_id);
+  } catch (error) {
+    throw new Error(`Unable to get user by ID: ${error}`);
+  }
+};

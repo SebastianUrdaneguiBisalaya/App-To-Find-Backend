@@ -1,14 +1,14 @@
 import express from 'express';
 import getEvents from './events/routes';
 
-import getUsers from './users/routes';
+import { getUserById } from './users/controller';
 const app = express();
 
 app.use(express.json());
 
 app.use(getEvents);
 
-app.use(getUsers);
+app.get('/getUser/:user_id', getUserById);
 app.use(
   (
     err: Error,
