@@ -1,22 +1,12 @@
 import express from 'express';
-import getEvents from './events/routes';
+import cookieParser from 'cookie-parser';
+import routerMain from './routes';
+
+import { errorHandler } from './shared/middleware';
 
 const app = express();
-
 app.use(express.json());
-
-app.use(getEvents);
-
-app.use(
-  (
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction,
-  ) => {
-    console.error(err.stack);
-    res.status(500).json({ error: err.message });
-  },
-);
-
+app.use(cookieParser());
+app.use(routerMain);
+app.use(errorHandler);
 export default app;

@@ -1,5 +1,5 @@
 import { EventsRepository } from '../domain/events.repository';
-import { prisma } from '../../database/database';
+import { prisma } from '../../../database/database';
 
 export const projectPrismaRepository: EventsRepository = {
   getTrendingEvents: async (limit: number, offset: number) => {

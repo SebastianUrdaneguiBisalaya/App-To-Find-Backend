@@ -1,11 +1,13 @@
 import app from './app';
 import http from 'http';
-import dotenv from 'dotenv';
+import { databaseConnect } from './database/database';
+import { config } from './config/config';
 
-dotenv.config();
-
-const server = http.createServer(app);
-
-server.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
+(async () => {
+  const { PORT } = config();
+  const server = http.createServer(app);
+  await databaseConnect();
+  server.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+})();

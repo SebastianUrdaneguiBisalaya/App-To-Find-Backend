@@ -19,7 +19,7 @@ model User {
   user_lastname String
   user_email    String     @unique
   user_password String
-  user_avatar   String
+  user_avatar   String?    
   verified      Boolean    @default(false)
   orders        Order[]    @relation("UserOrders")
   purchases     Purchase[]
