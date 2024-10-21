@@ -55,3 +55,9 @@ export interface UpcomingEvents
   > {
   event_price: number | undefined;
 }
+
+export interface InputSearch {
+  event_date_start?: Date;
+  event_date_end?: Date;
+  event_name?: string;
+}
