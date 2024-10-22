@@ -11,13 +11,18 @@ export const projectPrismaRepository: EventsRepository = {
           gte: new Date(),
         },
       },
-      orderBy: {
-        event: {
-          purchases: {
-            _count: 'desc',
+      orderBy: [
+        {
+          event_date: 'asc',
+        },
+        {
+          event: {
+            purchases: {
+              _count: 'desc',
+            },
           },
         },
-      },
+      ],
       select: {
         event_id: true,
         event_name: true,
@@ -25,6 +30,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_place: true,
         event_img: true,
         event_artist: true,
+        event_category: true,
         tickets: {
           select: {
             ticket_price: true,
@@ -52,6 +58,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_name: event.event_name,
         event_date: event.event_date,
         event_place: event.event_place,
+        event_category: event.event_category,
         event_img: event.event_img,
         event_artist: event.event_artist,
         event_price: minPrice,
@@ -70,18 +77,24 @@ export const projectPrismaRepository: EventsRepository = {
           lt: sevenDaysFromNow,
         },
       },
-      orderBy: {
-        event: {
-          purchases: {
-            _count: 'desc',
+      orderBy: [
+        {
+          event_date: 'asc',
+        },
+        {
+          event: {
+            purchases: {
+              _count: 'asc',
+            },
           },
         },
-      },
+      ],
       select: {
         event_id: true,
         event_name: true,
         event_date: true,
         event_place: true,
+        event_category: true,
         event_img: true,
         event_artist: true,
         tickets: {
@@ -104,6 +117,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_place: event.event_place,
         event_img: event.event_img,
         event_artist: event.event_artist,
+        event_category: event.event_category,
         event_price: minPrice,
       };
     });
@@ -118,20 +132,27 @@ export const projectPrismaRepository: EventsRepository = {
           gt: sevenDaysFromNow,
         },
       },
-      orderBy: {
-        event: {
-          purchases: {
-            _count: 'desc',
+      orderBy: [
+        {
+          event_date: 'asc',
+        },
+        {
+          event: {
+            purchases: {
+              _count: 'desc',
+            },
           },
         },
-      },
+      ],
       select: {
         event_id: true,
         event_name: true,
         event_date: true,
         event_place: true,
+        event_category: true,
         event_img: true,
         event_artist: true,
+        event_capacity: true,
         tickets: {
           select: {
             ticket_price: true,
@@ -152,6 +173,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_place: event.event_place,
         event_img: event.event_img,
         event_artist: event.event_artist,
+        event_category: event.event_category,
         event_price: minPrice,
       };
     });
@@ -181,19 +203,25 @@ export const projectPrismaRepository: EventsRepository = {
 
     const result = await prisma.event.findMany({
       where: { ...filters },
-      orderBy: {
-        event: {
-          purchases: {
-            _count: 'desc',
+      orderBy: [
+        {
+          event_date: 'asc',
+        },
+        {
+          event: {
+            purchases: {
+              _count: 'desc',
+            },
           },
         },
-      },
+      ],
       select: {
         event_id: true,
         event_name: true,
         event_date: true,
         event_place: true,
         event_img: true,
+        event_category: true,
         event_artist: true,
         tickets: {
           select: {
@@ -224,6 +252,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_date: event.event_date,
         event_place: event.event_place,
         event_img: event.event_img,
+        event_category: event.event_category,
         event_artist: event.event_artist,
         event_price: minPrice,
         total_purchases: totalPurchases,
@@ -266,13 +295,18 @@ export const projectPrismaRepository: EventsRepository = {
       where: {
         ...filters,
       },
-      orderBy: {
-        event: {
-          purchases: {
-            _count: 'desc',
+      orderBy: [
+        {
+          event_date: 'asc',
+        },
+        {
+          event: {
+            purchases: {
+              _count: 'desc',
+            },
           },
         },
-      },
+      ],
       select: {
         event_id: true,
         event_name: true,
@@ -280,6 +314,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_place: true,
         event_img: true,
         event_artist: true,
+        event_category: true,
         tickets: {
           select: {
             ticket_price: true,
@@ -300,6 +335,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_place: event.event_place,
         event_img: event.event_img,
         event_artist: event.event_artist,
+        event_category: event.event_category,
         event_price: minPrice,
       };
     });
@@ -356,6 +392,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_place: true,
         event_img: true,
         event_artist: true,
+        event_category: true,
         tickets: {
           select: {
             ticket_price: true,
@@ -376,6 +413,7 @@ export const projectPrismaRepository: EventsRepository = {
         event_place: event.event_place,
         event_img: event.event_img,
         event_artist: event.event_artist,
+        event_category: event.event_category,
         event_price: minPrice,
       };
     });
