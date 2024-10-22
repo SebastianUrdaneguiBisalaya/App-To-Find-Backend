@@ -17,8 +17,10 @@ model User {
   user_id       String     @id @default(uuid()) @db.Uuid
   user_name     String
   user_lastname String
-  user_email    String
+  user_email    String     @unique
   user_password String
+  user_avatar   String?    
+  verified      Boolean    @default(false)
   orders        Order[]    @relation("UserOrders")
   purchases     Purchase[]
 }

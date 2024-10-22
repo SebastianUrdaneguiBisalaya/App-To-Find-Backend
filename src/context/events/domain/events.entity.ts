@@ -16,7 +16,6 @@ export interface Events {
 export interface TrendingEvents
   extends Omit<
     Events,
-    | 'event_category'
     | 'event_hour'
     | 'event_hour'
     | 'event_latitude'
@@ -31,7 +30,6 @@ export interface TrendingEvents
 export interface ThisWeekEvents
   extends Omit<
     Events,
-    | 'event_category'
     | 'event_hour'
     | 'event_hour'
     | 'event_latitude'
@@ -45,7 +43,6 @@ export interface ThisWeekEvents
 export interface UpcomingEvents
   extends Omit<
     Events,
-    | 'event_category'
     | 'event_hour'
     | 'event_hour'
     | 'event_latitude'
@@ -54,4 +51,10 @@ export interface UpcomingEvents
     | 'event_description'
   > {
   event_price: number | undefined;
+}
+
+export interface InputSearch {
+  event_date_start?: Date;
+  event_date_end?: Date;
+  event_name?: string;
 }

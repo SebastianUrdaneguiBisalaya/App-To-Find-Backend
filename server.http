@@ -4,7 +4,7 @@ GET http://localhost:3000/trendingEvents
 
 ### Trending Events with limit and offset
 
-GET http://localhost:3000/trendingEvents?limit=10&offset=10
+GET http://localhost:3000/trendingEvents?limit=10&offset=0
 
 ### This Week Events with limit and offset
 
@@ -13,3 +13,15 @@ GET http://localhost:3000/thisweekevents?limit=10&offset=0
 ### Upcoming Events with limit and offset
 
 GET http://localhost:3000/upcomingevents?limit=10&offset=0
+
+### Trending Events by Input Search
+GET http://localhost:3000/istrendingevents?event_date_start=2024-10-01&event_name=paul%20mc&event_date_end=2024-12-31&limit=10&offset=0
+
+### This Week Events by Input Search
+GET http://localhost:3000/isthisweekevents?event_date_start=2024-10-01&event_date_end=2024-12-31&limit=10&offset=0
+
+### Upcoming Events by Input Search
+GET http://localhost:3000/isupcomingevents?event_date_start=2024-10-01&event_date_end=2024-12-31&limit=10&offset=10
+
+###
+GET http://localhost:3000/istrendingevents?limit=10&offset=0&event_date_start=2024-10-31&event_date_end=2024-10-31&event_name=paul
