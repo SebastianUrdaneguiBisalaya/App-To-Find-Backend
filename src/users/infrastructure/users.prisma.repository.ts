@@ -10,13 +10,6 @@ export const projectPrismaRepository: UsersRepository = {
     return user; 
   },
 
-  getUserByEmail: async (email: string): Promise<User | null> => {
-    const user = await prisma.user.findUnique({
-      where: { user_email: email },
-    });
-    return user; 
-  },
-
   updateUser: (userId: string, user: Partial<User>): Promise<User>  => {
     const updatedUser = prisma.user.update({
       where: { user_id: userId },

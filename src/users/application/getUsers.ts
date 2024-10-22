@@ -12,17 +12,6 @@ export const getUserById = (
   }
 };
 
-export const getUserByEmail = (
-  userRepository: UsersRepository,
-  email: string
-) => {
-  try {
-    return userRepository.getUserByEmail(email);
-  } catch (error) {
-    throw new Error(`Unable to get user by email: ${error}`);
-  }
-};
-
 export const updateUser = (
   userRepository: UsersRepository,
   userId: string,

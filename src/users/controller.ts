@@ -17,19 +17,6 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserByEmail = async (req: Request, res: Response) => {
-  try {
-    const email = req.params.email;
-    const user = await userService.getUserByEmail(userRepository, email);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: `Unable to get user ${error}` });
-  }
-};
-
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id; 
