@@ -1,7 +1,7 @@
 import { EventsRepository } from '../domain/events.repository';
-import { prisma } from '../../database/database';
 import { InputSearch } from '../domain/events.entity';
 import { Prisma } from '@prisma/client';
+import { prisma } from '../../../database/database';
 
 export const projectPrismaRepository: EventsRepository = {
   getTrendingEvents: async (limit: number, offset: number) => {
