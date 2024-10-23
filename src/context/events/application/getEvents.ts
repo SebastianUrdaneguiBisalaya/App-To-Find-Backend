@@ -75,3 +75,14 @@ export const getInputSearchUpcomingEvents = (
     throw new Error(`Unnable to get trending events by input search ${error}`);
   }
 };
+
+export const getEventDetailById = (
+  eventRepository: EventsRepository,
+  id: string
+) => {
+  try {
+    return eventRepository.getEventDetailById(id)
+  } catch (error) {
+    throw new Error(`Unnable to get the event detail ${error}`)
+  }
+}

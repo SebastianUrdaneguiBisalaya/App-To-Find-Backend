@@ -1,5 +1,5 @@
 import { EventsRepository } from '../domain/events.repository';
-import { InputSearch } from '../domain/events.entity';
+import { EventDetailById, InputSearch } from '../domain/events.entity';
 import { Prisma } from '@prisma/client';
 import { prisma } from '../../../database/database';
 
@@ -419,4 +419,42 @@ export const projectPrismaRepository: EventsRepository = {
     });
     return upcomingEvents;
   },
+
+  getEventDetailById: async (id: string) => {
+    const result = await prisma.event.findUnique({
+      where: {
+        event_id: id
+      },
+      include: {
+        tickets: true
+      }
+    })
+    if (!result) {
+      throw new Error(`Event with ID ${id} not found`);
+    }
+    const eventDetail: EventDetailById = {
+      event_name: result.event_name,
+      event_category: result.event_category,
+      event_date: result.event_date,
+      event_hour: result.event_hour,
+      event_place: result.event_place,
+      event_latitude: result.event_latitude,
+      event_longitude: result.event_longitude,
+      event_capacity: result.event_capacity,
+      event_img: result.event_img,
+      event_description: result.event_description,
+      event_artist: result.event_artist,
+      pre_sale_date: result.pre_sale_date,
+      pre_sale_end_date: result.pre_sale_end_date,
+      pre_sale_discount: result.pre_sale_discount,
+      tickets: result.tickets.map(ticket => ({
+        ticket_id: ticket.ticket_id,
+        event_id: ticket.event_id,
+        ticket_type: ticket.ticket_type,
+        ticket_price: ticket.ticket_price.toString(),
+        ticket_quantity: ticket.ticket_quantity,
+      }))
+    };
+    return eventDetail;
+  }
 };

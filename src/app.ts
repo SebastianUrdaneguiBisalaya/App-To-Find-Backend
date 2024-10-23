@@ -2,7 +2,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import routerMain from './routes';
 import routerEvents from './context/events/routes';
-import getEvents from './events/routes';
+// import getEvents from './events/routes';
 import getUsers from './users/routes'
 import cors from 'cors';
 
@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(routerMain);
 app.use(routerEvents);
-app.use(getEvents);
+// app.use(getEvents);
 app.use(getUsers);
 app.use(errorHandler);
 export default app;

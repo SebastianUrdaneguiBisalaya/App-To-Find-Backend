@@ -129,3 +129,16 @@ export const getInputSearchUpcomingEvents = async (
     throw new Error(`Unnable to get trending events by input search ${error}`);
   }
 };
+
+export const getEventDetailById = async (req: Request, res: Response) => {
+  const event_id = req.params.event_id as string;
+  try {
+    const detailEventById = await eventService.getEventDetailById(
+      repository,
+      event_id
+    );
+    res.json(detailEventById)
+  } catch (error) {
+    throw new Error(`Unnable to get the event detail by id. ${error}`);
+  }
+}

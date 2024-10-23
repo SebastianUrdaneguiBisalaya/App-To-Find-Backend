@@ -3,6 +3,7 @@ import {
   ThisWeekEvents,
   UpcomingEvents,
   InputSearch,
+  EventDetailById
 } from './events.entity';
 
 export interface EventsRepository {
@@ -24,4 +25,5 @@ export interface EventsRepository {
     limit: number,
     offset: number,
   ): Promise<UpcomingEvents[]>;
+  getEventDetailById(id:string): Promise<EventDetailById>;
 }
