@@ -3,6 +3,9 @@ import * as authService from './application';
 import { createDependencies } from './infrastructure/dependency.provider';
 import { LoginRequest, SignUpRequest } from './schema';
 import { StatusCodes } from '../../utils/constants';
+import { config } from '../../config/config';
+
+const { NODE_ENV } = config();
 
 const { userRepository, bcryptAdapter, jwtAdapter, mailerService } =
   createDependencies();
@@ -27,14 +30,12 @@ export const login = async (req: Request, res: Response) => {
     bcryptAdapter,
     jwtAdapter('1h'),
   );
-  res
-    .status(StatusCodes.OK)
-    .cookie('token', response.token, {
-      httpOnly: true,
-      secure: true,
-      expires: new Date(Date.now() + 1000 * 60 * 60),
-    })
-    .json({ data: response.user });
+  res.cookie('token', response.token, {
+    httpOnly: true,
+    secure: NODE_ENV === 'production',
+    expires: new Date(Date.now() + 1000 * 60 * 60),
+  });
+  res.status(StatusCodes.OK).json({ data: response.user });
 };
 
 export const verifyAccount = async (req: Request, res: Response) => {
@@ -45,4 +46,11 @@ export const verifyAccount = async (req: Request, res: Response) => {
     jwtAdapter(),
   );
   res.status(StatusCodes.OK).json({ data: response });
+};
+
+export const logOut = async (req: Request, res: Response) => {
+  res.clearCookie('token');
+  res
+    .status(StatusCodes.OK)
+    .json({ data: { message: 'Logged out successfully' } });
 };

@@ -1,11 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import routerMain from './routes';
-import routerEvents from './context/events/routes';
-// import getEvents from './events/routes';
-import getUsers from './users/routes'
+import mainRouter from './routes';
 import cors from 'cors';
-
 import { errorHandler } from './shared/middleware';
 
 const app = express();
@@ -26,12 +22,8 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 );
-
 app.use(express.json());
 app.use(cookieParser());
-app.use(routerMain);
-app.use(routerEvents);
-// app.use(getEvents);
-app.use(getUsers);
+app.use(mainRouter);
 app.use(errorHandler);
 export default app;
