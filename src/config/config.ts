@@ -14,4 +14,6 @@ export const config = () => ({
   BREVO_SMTP_PORT: process.env.BREVO_SMTP_PORT || '587',
   BREVO_SMTP_USER: process.env.BREVO_SMTP_USER || '',
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:5173',
+  BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:3000',
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || ''
 });

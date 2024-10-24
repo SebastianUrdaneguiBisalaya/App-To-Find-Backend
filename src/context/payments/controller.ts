@@ -1,56 +1,25 @@
 import { Request, Response } from 'express';
-import Stripe from 'stripe';
+import { createDependencies } from './infrastructure/dependency.provider';
+import * as PaymentService from './application';
+import { StatusCodes } from '../../utils/constants';
+import { config } from '../../config/config';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {});
+const { FRONTEND_URL} = config()
+const { orderRepository, paymentAdapter } = createDependencies();
 
 export const checkout = async (req: Request, res: Response) => {
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [
-      {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: 'Example product',
-          },
-          unit_amount: 2000,
-        },
-        quantity: 1,
-      },
-      {
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: 'Example product',
-          },
-          unit_amount: 2000,
-        },
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url:
-      'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
-    cancel_url: `${process.env.FRONTEND_URL}/cancel`,
-    metadata: {
-      customData: JSON.stringify({
-        id: 'cs_test_a1GIhROQKz1i7JFEq6J2fr66GeYswvFt1Br2XEYUbGnvZxYxkLV1tHgaNT',
-        object: 'checkout.session',
-        livemode: false,
-        payment_intent: 'pi_3QDExvFa8J1H48831wNMRW6Z',
-        status: 'complete',
-      }),
-    },
-  });
-
-  console.log(session);
+  const response = await PaymentService.checkout(req.body, paymentAdapter);
+  res.status(StatusCodes.OK).json(response);
 };
+
 
 export const success = async (req: Request, res: Response) => {
   const { session_id } = req.query;
-  console.log(session_id, 'SESSION ID');
-  const session = await stripe.checkout.sessions.retrieve(session_id);
-  const customData = JSON.parse(session.metadata.customData);
-  console.log(customData);
-  res.redirect("http://localhost:5173/success");
+  await PaymentService.success(session_id as string, paymentAdapter, orderRepository)
+  res.redirect(`${FRONTEND_URL}/success`);
 };
+
+export const cancel = async (req: Request, res: Response) => {
+  res.redirect(`${FRONTEND_URL}/cancel`);
+};
+
