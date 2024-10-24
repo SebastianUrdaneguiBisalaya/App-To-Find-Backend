@@ -5,7 +5,7 @@ import routerEvents from './context/events/routes';
 // import getEvents from './events/routes';
 import getUsers from './users/routes'
 import cors from 'cors';
-
+import paymentsRoutes from './context/payments/routes';
 import { errorHandler } from './shared/middleware';
 
 const app = express();
@@ -33,5 +33,6 @@ app.use(routerMain);
 app.use(routerEvents);
 // app.use(getEvents);
 app.use(getUsers);
+app.use(paymentsRoutes);
 app.use(errorHandler);
 export default app;
