@@ -8,7 +8,6 @@ export const OrderPrismaRepository: OrderRepository = {
     orderData: Order,
     purchaseDataArray: Omit<Purchase, "order_id">[],
   ): Promise<void> {
-    console.log(orderData, purchaseDataArray)
     await prisma.order.create({
       data: {
         ...orderData,

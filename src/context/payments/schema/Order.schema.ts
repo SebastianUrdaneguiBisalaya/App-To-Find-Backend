@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const purchaseSchema = z.object({
+    ticket_name: z.string(),
     purchase_id: z.string(),
     ticket_id: z.string(),
     purchase_amount: z.number(),
