@@ -28,3 +28,6 @@ GET http://localhost:3000/istrendingevents?limit=10&offset=0&event_date_start=20
 
 ###
 GET http://localhost:3000/eventdetail/01013117-8426-4b5e-be85-aa6f45d3220b
+
+### Payment
+POST http://localhost:3000/checkout
