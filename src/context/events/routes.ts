@@ -6,7 +6,7 @@ import {
   getInputSearchTrendingEvents,
   getInputSearchThisWeekEvents,
   getInputSearchUpcomingEvents,
-  getEventDetailById
+  getEventDetailById,
 } from './controller';
 
 const router = Router();
@@ -23,7 +23,7 @@ router.get('/isthisweekevents', getInputSearchThisWeekEvents);
 // GET http://localhost:3000/isthisweekevents?event_date_start=2024-10-01&event_date_end=2024-12-31&event_name=boys&limit=10&offset=0
 router.get('/isupcomingevents', getInputSearchUpcomingEvents);
 // GET http://localhost:3000/isupcomingevents?event_date_start=2024-10-01&event_date_end=2024-12-31&event_name=boys&limit=10&offset=0
-router.get("/eventdetail/:event_id", getEventDetailById)
+router.get('/eventdetail/:event_id', getEventDetailById);
 // GET http://localhost:3000/eventdetail/01013117-8426-4b5e-be85-aa6f45d3220b
 
 export default router;

@@ -78,11 +78,11 @@ export const getInputSearchUpcomingEvents = (
 
 export const getEventDetailById = (
   eventRepository: EventsRepository,
-  id: string
+  id: string,
 ) => {
   try {
-    return eventRepository.getEventDetailById(id)
+    return eventRepository.getEventDetailById(id);
   } catch (error) {
-    throw new Error(`Unnable to get the event detail ${error}`)
+    throw new Error(`Unnable to get the event detail ${error}`);
   }
-}
+};

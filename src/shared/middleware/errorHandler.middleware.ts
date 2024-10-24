@@ -9,12 +9,15 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  console.log(err);
+  console.log(err, 'ddd');
   if (err instanceof CustomError) {
     res.status(err.status).json({ error: { message: err.message } });
     return;
   }
-  if (err.name === 'PrismaClientInitializationError') {
+  if (
+    err.name === 'PrismaClientInitializationError' ||
+    err.name === 'PrismaClientKnownRequestError'
+  ) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: { message: 'Something went wrong' } });

@@ -135,10 +135,10 @@ export const getEventDetailById = async (req: Request, res: Response) => {
   try {
     const detailEventById = await eventService.getEventDetailById(
       repository,
-      event_id
+      event_id,
     );
-    res.json(detailEventById)
+    res.json(detailEventById);
   } catch (error) {
     throw new Error(`Unnable to get the event detail by id. ${error}`);
   }
-}
+};

@@ -423,12 +423,12 @@ export const projectPrismaRepository: EventsRepository = {
   getEventDetailById: async (id: string) => {
     const result = await prisma.event.findUnique({
       where: {
-        event_id: id
+        event_id: id,
       },
       include: {
-        tickets: true
-      }
-    })
+        tickets: true,
+      },
+    });
     if (!result) {
       throw new Error(`Event with ID ${id} not found`);
     }
@@ -447,14 +447,14 @@ export const projectPrismaRepository: EventsRepository = {
       pre_sale_date: result.pre_sale_date,
       pre_sale_end_date: result.pre_sale_end_date,
       pre_sale_discount: result.pre_sale_discount,
-      tickets: result.tickets.map(ticket => ({
+      tickets: result.tickets.map((ticket) => ({
         ticket_id: ticket.ticket_id,
         event_id: ticket.event_id,
         ticket_type: ticket.ticket_type,
         ticket_price: ticket.ticket_price.toString(),
         ticket_quantity: ticket.ticket_quantity,
-      }))
+      })),
     };
     return eventDetail;
-  }
+  },
 };
