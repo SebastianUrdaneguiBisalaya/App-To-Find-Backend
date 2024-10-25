@@ -19,9 +19,9 @@ export const success = async (req: Request, res: Response) => {
     paymentAdapter,
     orderRepository,
   );
-  res.redirect(`${FRONTEND_URL}/success`);
+  res.redirect(`http://localhost:5173/success`);
 };
 
 export const cancel = async (_req: Request, res: Response) => {
-  res.redirect(`${FRONTEND_URL}/cancel`);
+  res.redirect(`http://localhost:5173/cancel`);
 };
