@@ -6,7 +6,11 @@ import { errorHandler } from './shared/middleware';
 
 const app = express();
 
-const whiteList = ['http://localhost:5173', 'https://example.com'];
+const whiteList = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://example.com',
+];
 
 app.use(
   cors({

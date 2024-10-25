@@ -39,7 +39,13 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const verifyAccount = async (req: Request, res: Response) => {
-  const data = req.body;
+  const { token: data } = req.params;
+  if (typeof data !== 'string') {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: 'Invalid token format. Token must be a string.' });
+    return;
+  }
   const response = await authService.verifyAccount(
     data,
     userRepository,

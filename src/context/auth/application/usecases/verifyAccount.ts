@@ -1,19 +1,20 @@
 import { TokenExpiredError } from 'jsonwebtoken';
 import { JWTAdapter } from '../interfaces/adapters';
 import { DecodedToken } from '../interfaces/decodeToken';
-import { VerifyAccountRequest } from '../../schema';
+//import { VerifyAccountRequest } from '../../schema';
 import { UserRepository } from '../../domain/user.repository';
 import { StatusCodes } from '../../../../utils/constants';
 import { CustomError } from '../../../../shared/error/CustomError';
 
 const verifyAccount = async (
-  data: VerifyAccountRequest,
+  data: string,
   userRepository: UserRepository,
   jwtAdapter: JWTAdapter,
 ): Promise<{ message: string }> => {
   try {
+    console.log(data);
     const decodedToken = jwtAdapter.verifyToken(
-      data.token,
+      data,
     ) as unknown as DecodedToken;
 
     const user = await userRepository.findUserByEmail(decodedToken.email);

@@ -10,6 +10,6 @@ const router = Router();
 router.post('/sign-up', validateData(SignUpSchema), asyncHandler(signUp));
 router.post('/login', validateData(LoginSchema), asyncHandler(login));
 router.post('/logout', authorizationMiddleware, asyncHandler(logOut));
-router.post('/verify', asyncHandler(verifyAccount));
+router.get('/verify/:token', asyncHandler(verifyAccount));
 
 export default router;

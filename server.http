@@ -27,4 +27,8 @@ GET http://localhost:3000/isupcomingevents?event_date_start=2024-10-01&event_dat
 GET http://localhost:3000/istrendingevents?limit=10&offset=0&event_date_start=2024-10-31&event_date_end=2024-10-31&event_name=paul
 
 ###
-GET http://localhost:3000/eventdetail/01013117-8426-4b5e-be85-aa6f45d3220b
+GET http://localhost:3000/eventdetail/86a078b4-c492-4245-93c9-f7ede1b16fb8
+
+###
+GET http://localhost:3000/auth/verify/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlYmFzdXJkYW5lZ3VpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTg4Njg5NiwiZXhwIjoxNzI5OTAxMjk2fQ.IHk8gbE9-reNCQMVN08wTMYRwSN5PpGH8kOKyZVjW9k
+Content-Type: application/json

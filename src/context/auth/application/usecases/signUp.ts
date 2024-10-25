@@ -37,7 +37,7 @@ const signUp = async (
     subject: 'Welcome to our platform',
     html: `<h1>Welcome ${user.user_email}</h1>
         <p>Thanks for joining our platform your token ${token}</p> 
-        Link: <a href="${FRONTEND_URL}/verify/${token}">Verify your account</a>
+        Link: <a href="${FRONTEND_URL}/auth/verify/${token}">Verify your account</a>
       `,
   });
   const response = {
