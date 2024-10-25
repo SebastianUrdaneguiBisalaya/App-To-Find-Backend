@@ -9,7 +9,7 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  console.log(err, 'ddd');
+  console.log(err)
   if (err instanceof CustomError) {
     res.status(err.status).json({ error: { message: err.message } });
     return;

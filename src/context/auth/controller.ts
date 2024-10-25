@@ -54,7 +54,7 @@ export const verifyAccount = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ data: response });
 };
 
-export const logOut = async (req: Request, res: Response) => {
+export const logOut = async (_req: Request, res: Response) => {
   res.clearCookie('token');
   res
     .status(StatusCodes.OK)

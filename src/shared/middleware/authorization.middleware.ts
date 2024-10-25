@@ -7,7 +7,7 @@ const { jwtAdapter } = createDependencies();
 
 export const authorizationMiddleware = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   const { token } = req.cookies;
