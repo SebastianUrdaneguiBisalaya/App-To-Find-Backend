@@ -6,7 +6,8 @@ import { errorHandler } from './shared/middleware';
 
 const app = express();
 
-const whiteList = ['http://localhost:5173', 'https://example.com'];
+
+const whiteList = ['http://localhost:3000','http://localhost:5173','http://localhost:5174', 'https://example.com'];
 
 app.use(
   cors({
@@ -22,6 +23,8 @@ app.use(
     allowedHeaders: ['Content-Type', 'Authorization'],
   }),
 );
+
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(mainRouter);
