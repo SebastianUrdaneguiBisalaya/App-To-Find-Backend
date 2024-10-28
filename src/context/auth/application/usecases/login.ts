@@ -47,7 +47,7 @@ const login = async (
   });
 
   const response = {
-    user: { id: user.user_id, email: user.user_email },
+    user: { id: user.user_id, email: user.user_email, name:user.user_name, lastName: user.user_lastname, avatar:user.user_avatar },
     token,
   };
   return response;
