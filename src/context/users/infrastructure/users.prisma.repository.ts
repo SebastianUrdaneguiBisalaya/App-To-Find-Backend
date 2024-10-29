@@ -10,11 +10,19 @@ export const projectPrismaRepository: UsersRepository = {
     return user;
   },
 
-  updateUser: (userId: string, user: Partial<User>): Promise<User> => {
-    const updatedUser = prisma.user.update({
+  updateUser: async (userId: string, user: Partial<User>): Promise<User> => {
+    const updatedUser = await prisma.user.update({
       where: { user_id: userId },
       data: user,
     });
     return updatedUser;
+  },
+
+  deleteUser: async (userId: string): Promise<void> => {
+    const deleteUser = await prisma.user.delete({
+      where: {
+        user_id: userId,
+      },
+    });
   },
 };
