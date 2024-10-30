@@ -8,10 +8,12 @@ export const getTrendingEvents = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const sort = req.query.sort as string || "";
     const trendingEvents = await eventService.getTrendingEvents(
       repository,
       limit,
       offset,
+      sort
     );
     res.json(trendingEvents);
   } catch (error) {

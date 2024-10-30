@@ -4,7 +4,7 @@ GET http://localhost:3000/trendingEvents
 
 ### Trending Events with limit and offset
 
-GET http://localhost:3000/trendingEvents?limit=10&offset=0
+GET http://localhost:3000/trendingEvents?limit=10&offset=0&sort=desc
 
 ### This Week Events with limit and offset
 

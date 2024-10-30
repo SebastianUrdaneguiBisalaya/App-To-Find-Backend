@@ -23,8 +23,8 @@ export interface TrendingEvents
     | 'event_capicity'
     | 'event_description'
   > {
-  event_price: number | undefined;
-  total_purchases: number | undefined;
+  event_price: Number | undefined;
+  total_purchases: Number | undefined;
 }
 
 export interface ThisWeekEvents
