@@ -13,6 +13,7 @@ model User {
   user_lastname String
   user_email    String     @unique
   user_password String
+  age           Int?
   user_avatar   String?
   verified      Boolean    @default(false)
   orders        Order[]    @relation("UserOrders")
@@ -46,7 +47,7 @@ model Order {
   order_state String
   event_id    String     @unique @db.Uuid
   event       Event      @relation(fields: [event_id], references: [event_id])
-  user        User       @relation("UserOrders", fields: [user_id], references: [user_id])
+  user        User       @relation("UserOrders", fields: [user_id], references: [user_id], onDelete: Cascade)
   purchases   Purchase[] @relation("OrderPurchases")
 }
 
@@ -60,7 +61,7 @@ model Purchase {
   bar_code          String
   order             Order  @relation("OrderPurchases", fields: [order_id], references: [order_id])
   ticket            Ticket @relation(fields: [ticket_id], references: [ticket_id])
-  user              User   @relation(fields: [user_id], references: [user_id])
+  user              User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
 model Ticket {
