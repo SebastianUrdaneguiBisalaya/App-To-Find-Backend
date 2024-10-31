@@ -7,7 +7,7 @@ const router = Router();
 router.get('/users/:id', authorizationMiddleware, getUserById);
 // GET /users/:id
 
-router.put('/users/:id', authorizationMiddleware, updateUser);
+router.put('/users/:id', updateUser);
 // PUT /users/:id
 
 export default router;
