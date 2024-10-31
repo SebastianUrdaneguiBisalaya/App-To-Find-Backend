@@ -8,12 +8,12 @@ export const getTrendingEvents = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
-    const sort = req.query.sort as string || "";
+    const sort = (req.query.sort as string) || '';
     const trendingEvents = await eventService.getTrendingEvents(
       repository,
       limit,
       offset,
-      sort
+      sort,
     );
     res.json(trendingEvents);
   } catch (error) {
@@ -129,6 +129,19 @@ export const getInputSearchUpcomingEvents = async (
     res.json(upcomingEventsByInputSearch);
   } catch (error) {
     throw new Error(`Unnable to get trending events by input search ${error}`);
+  }
+};
+
+export const getUserHistoryEvents = async (req: Request, res: Response) => {
+  const userId = req.params.user_id as string;
+  try {
+    const userHistoryEvents = await eventService.getUserHistoryEvents(
+      repository,
+      userId,
+    );
+    res.json(userHistoryEvents);
+  } catch (error) {
+    throw new Error(`Unnable to get user history events ${error}`);
   }
 };
 

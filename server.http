@@ -29,6 +29,9 @@ GET http://localhost:3000/istrendingevents?limit=10&offset=0&event_date_start=20
 ###
 GET http://localhost:3000/eventdetail/86a078b4-c492-4245-93c9-f7ede1b16fb8
 
+### Get User History Events
+GET http://localhost:3000/userhistoryevents/29127122-898a-448f-9aa8-9b52b6a546c2
+
 ###
 GET http://localhost:3000/auth/verify/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlYmFzdXJkYW5lZ3VpQGdtYWlsLmNvbSIsImlhdCI6MTcyOTg4Njg5NiwiZXhwIjoxNzI5OTAxMjk2fQ.IHk8gbE9-reNCQMVN08wTMYRwSN5PpGH8kOKyZVjW9k
 Content-Type: application/json

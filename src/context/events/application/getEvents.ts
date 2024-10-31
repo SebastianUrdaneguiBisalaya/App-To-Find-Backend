@@ -18,7 +18,7 @@ export const getThisWeekEvents = (
   eventRespository: EventsRepository,
   limit: number,
   offset: number,
-  sort?: string
+  sort?: string,
 ) => {
   try {
     return eventRespository.getThisWeekEvents(limit, offset, sort);
@@ -31,7 +31,7 @@ export const getUpcomingEvents = (
   eventRepository: EventsRepository,
   limit: number,
   offset: number,
-  sort?: string
+  sort?: string,
 ) => {
   try {
     return eventRepository.getUpcomingEvents(limit, offset, sort);
@@ -45,10 +45,15 @@ export const getInputSearchTrendingEvents = (
   data: InputSearch,
   limit: number,
   offset: number,
-  sort?: string
+  sort?: string,
 ) => {
   try {
-    return eventRepository.getInputSearchTrendingEvents(data, limit, offset, sort);
+    return eventRepository.getInputSearchTrendingEvents(
+      data,
+      limit,
+      offset,
+      sort,
+    );
   } catch (error) {
     throw new Error(`Unnable to get trending events by input search ${error}`);
   }
@@ -59,10 +64,15 @@ export const getInputSearchThisWeekEvents = (
   data: InputSearch,
   limit: number,
   offset: number,
-  sort?: string
+  sort?: string,
 ) => {
   try {
-    return eventRepository.getInputSearchThisWeekEvents(data, limit, offset, sort);
+    return eventRepository.getInputSearchThisWeekEvents(
+      data,
+      limit,
+      offset,
+      sort,
+    );
   } catch (error) {
     throw new Error(`Unnable to get trending events by input search ${error}`);
   }
@@ -73,10 +83,15 @@ export const getInputSearchUpcomingEvents = (
   data: InputSearch,
   limit: number,
   offset: number,
-  sort?: string
+  sort?: string,
 ) => {
   try {
-    return eventRepository.getInputSearchUpcomingEvents(data, limit, offset, sort);
+    return eventRepository.getInputSearchUpcomingEvents(
+      data,
+      limit,
+      offset,
+      sort,
+    );
   } catch (error) {
     throw new Error(`Unnable to get trending events by input search ${error}`);
   }
@@ -90,5 +105,16 @@ export const getEventDetailById = (
     return eventRepository.getEventDetailById(id);
   } catch (error) {
     throw new Error(`Unnable to get the event detail ${error}`);
+  }
+};
+
+export const getUserHistoryEvents = (
+  eventRepository: EventsRepository,
+  userId: string,
+) => {
+  try {
+    return eventRepository.getUserHistoryEvents(userId);
+  } catch (error) {
+    throw new Error(`Unnable to get user history events ${error}`);
   }
 };

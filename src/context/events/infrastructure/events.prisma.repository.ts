@@ -1,13 +1,20 @@
 import { EventsRepository } from '../domain/events.repository';
-import { EventDetailById, InputSearch, ThisWeekEvents, TrendingEvents, UpcomingEvents } from '../domain/events.entity';
+import {
+  EventDetailById,
+  InputSearch,
+  ThisWeekEvents,
+  TrendingEvents,
+  UpcomingEvents,
+  UserHistoryEvents,
+} from '../domain/events.entity';
 import { Prisma } from '@prisma/client';
 import { prisma } from '../../../database/database';
 
 export const projectPrismaRepository: EventsRepository = {
-  getTrendingEvents: async (limit: number, offset: number, sort?:string) => {
-    const sortDirection = sort === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+  getTrendingEvents: async (limit: number, offset: number, sort?: string) => {
+    const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
 
-    const data:TrendingEvents[] = await prisma.$queryRaw`
+    const data: TrendingEvents[] = await prisma.$queryRaw`
       SELECT e.*, MIN(t.ticket_price) AS event_price, COUNT(p.purchase_id) AS total_purchases
       FROM "Event" e
       LEFT JOIN "Ticket" t ON e.event_id = t.event_id
@@ -17,7 +24,7 @@ export const projectPrismaRepository: EventsRepository = {
       ORDER BY e.event_date ASC, total_purchases DESC, event_price ${sortDirection}
       LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
-  
+
     return data.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -27,11 +34,11 @@ export const projectPrismaRepository: EventsRepository = {
       event_img: event.event_img,
       event_artist: event.event_artist,
       event_price: event.event_price,
-      total_purchases: Number(event.total_purchases)
+      total_purchases: Number(event.total_purchases),
     }));
   },
   getThisWeekEvents: async (limit: number, offset: number, sort?: string) => {
-    const sortDirection = sort === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+    const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const sevenDaysFromNow = new Date();
     sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
     const data: ThisWeekEvents[] = await prisma.$queryRaw`
@@ -42,7 +49,7 @@ export const projectPrismaRepository: EventsRepository = {
     GROUP BY e.event_id
     ORDER BY e.event_date ASC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
-    `
+    `;
     return data.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -54,8 +61,8 @@ export const projectPrismaRepository: EventsRepository = {
       event_price: event.event_price,
     }));
   },
-  getUpcomingEvents: async (limit: number, offset: number, sort?:string) => {
-    const sortDirection = sort === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+  getUpcomingEvents: async (limit: number, offset: number, sort?: string) => {
+    const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const sevenDaysFromNow = new Date();
     sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
     const data: ThisWeekEvents[] = await prisma.$queryRaw`
@@ -67,7 +74,7 @@ export const projectPrismaRepository: EventsRepository = {
     GROUP BY e.event_id
     ORDER BY e.event_date ASC, total_purchases DESC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
-    `
+    `;
     return data.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -84,9 +91,9 @@ export const projectPrismaRepository: EventsRepository = {
     data: InputSearch,
     limit: number,
     offset: number,
-    sort?:string,
+    sort?: string,
   ) => {
-    const sortDirection = sort === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+    const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const { event_date_start, event_date_end, event_name } = data;
     const result: TrendingEvents[] = await prisma.$queryRaw`
     SELECT e.*, MIN(t.ticket_price) AS event_price, COUNT(p.purchase_id) AS total_purchases
@@ -99,7 +106,7 @@ export const projectPrismaRepository: EventsRepository = {
     GROUP BY e.event_id
     ORDER BY e.event_date ASC, total_purchases DESC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
-    `
+    `;
     return result.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -109,7 +116,7 @@ export const projectPrismaRepository: EventsRepository = {
       event_artist: event.event_artist,
       event_category: event.event_category,
       event_price: event.event_price,
-      total_purchases: Number(event.total_purchases)
+      total_purchases: Number(event.total_purchases),
     }));
   },
 
@@ -117,7 +124,7 @@ export const projectPrismaRepository: EventsRepository = {
     data: InputSearch,
     limit: number,
     offset: number,
-    sort?:string,
+    sort?: string,
   ) => {
     const { event_date_end, event_name } = data;
     const sevenDaysFromNow = new Date();
@@ -128,7 +135,7 @@ export const projectPrismaRepository: EventsRepository = {
     } else {
       finalDate = event_date_end;
     }
-    const sortDirection = sort === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+    const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const result: ThisWeekEvents[] = await prisma.$queryRaw`
     SELECT e.*, MIN(t.ticket_price) AS event_price
     FROM "Event" e
@@ -139,7 +146,7 @@ export const projectPrismaRepository: EventsRepository = {
     GROUP BY e.event_id
     ORDER BY e.event_date ASC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
-    `
+    `;
     return result.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -148,7 +155,7 @@ export const projectPrismaRepository: EventsRepository = {
       event_img: event.event_img,
       event_artist: event.event_artist,
       event_category: event.event_category,
-      event_price: event.event_price
+      event_price: event.event_price,
     }));
   },
 
@@ -156,12 +163,12 @@ export const projectPrismaRepository: EventsRepository = {
     data: InputSearch,
     limit: number,
     offset: number,
-    sort?:string
+    sort?: string,
   ) => {
     const { event_date_end, event_name } = data;
     const sevenDaysFromNow = new Date();
     sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
-    const sortDirection = sort === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`;
+    const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const result: UpcomingEvents[] = await prisma.$queryRaw`
     SELECT e.*, MIN(t.ticket_price) AS event_price
     FROM "Event" e
@@ -172,7 +179,7 @@ export const projectPrismaRepository: EventsRepository = {
     GROUP BY e.event_id
     ORDER BY e.event_date ASC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
-    `
+    `;
     return result.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -181,8 +188,56 @@ export const projectPrismaRepository: EventsRepository = {
       event_img: event.event_img,
       event_artist: event.event_artist,
       event_category: event.event_category,
-      event_price: event.event_price
+      event_price: event.event_price,
     }));
+  },
+
+  getUserHistoryEvents: async (
+    userId: string,
+  ): Promise<UserHistoryEvents | null> => {
+    const result = await prisma.user.findUnique({
+      where: {
+        user_id: userId,
+      },
+      select: {
+        user_id: true,
+        user_name: true,
+        user_lastname: true,
+        orders: {
+          select: {
+            order_id: true,
+            order_date: true,
+            event: {
+              select: {
+                event_id: true,
+                event_name: true,
+                event_date: true,
+                event_hour: true,
+                event_place: true,
+                event_country: true,
+                event_category: true,
+                event_artist: true,
+              },
+            },
+            purchases: {
+              select: {
+                purchase_id: true,
+                purchase_amount: true,
+                bar_code: true,
+                ticket: {
+                  select: {
+                    ticket_id: true,
+                    ticket_type: true,
+                    ticket_price: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return result;
   },
 
   getEventDetailById: async (id: string) => {
