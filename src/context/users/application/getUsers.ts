@@ -23,3 +23,14 @@ export const updateUser = (
     throw new Error(`Unable to update user: ${error}`);
   }
 };
+
+export const deleteUser = (
+  userRepository: UsersRepository,
+  userId: string
+) => {
+  try {
+    return userRepository.deleteUser(userId);
+  } catch (error) {
+    throw new Error(`Unable to delete user: ${error}`);
+  }
+};

@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import mainRouter from './routes';
 import cors from 'cors';
 import { errorHandler } from './shared/middleware';
+import uploadRoutes from './uploadImages/routes';
 
 const app = express();
 
@@ -30,4 +31,5 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(mainRouter);
 app.use(errorHandler);
+app.use(uploadRoutes);
 export default app;

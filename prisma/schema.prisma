@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,28 +8,20 @@ datasource db {
 }
 
 model User {
-  user_id       String     @id @default(uuid()) @db.Uuid
+  user_id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_name     String
   user_lastname String
   user_email    String     @unique
   user_password String
-  user_avatar   String?    
+  age           Int?
+  user_avatar   String?
   verified      Boolean    @default(false)
   orders        Order[]    @relation("UserOrders")
   purchases     Purchase[]
 }
 
-// model EventPreSale {
-//   event_pre_sale_id String   @id @default(uuid()) @db.Uuid
-//   event_id          String   @unique @db.Uuid
-//   pre_sale_date     DateTime
-//   pre_sale_end_date DateTime
-//   pre_sale_discount DateTime
-//   event_pre_sale    Event?
-// }
-
 model Event {
-  event_id          String   @id @default(uuid()) @db.Uuid
+  event_id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   event_name        String
   event_category    String
   event_date        DateTime
@@ -47,7 +33,6 @@ model Event {
   event_img         String
   event_description String
   event_artist      String
-  // event_pre_sale    EventPreSale? @relation(fields: [event_id], references: [event_id])
   pre_sale_date     DateTime
   pre_sale_end_date DateTime
   pre_sale_discount Float
@@ -56,35 +41,35 @@ model Event {
 }
 
 model Order {
-  order_id    String     @id @default(uuid()) @db.Uuid
+  order_id    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   order_date  DateTime
   user_id     String     @db.Uuid
   order_state String
   event_id    String     @unique @db.Uuid
   event       Event      @relation(fields: [event_id], references: [event_id])
-  user        User       @relation("UserOrders", fields: [user_id], references: [user_id])
+  user        User       @relation("UserOrders", fields: [user_id], references: [user_id], onDelete: Cascade)
   purchases   Purchase[] @relation("OrderPurchases")
 }
 
 model Purchase {
-  purchase_id       String @id @default(uuid()) @db.Uuid
+  purchase_id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id           String @db.Uuid
   order_id          String @db.Uuid
   purchase_quantity Int
   purchase_amount   Float
   ticket_id         String @unique @db.Uuid
   bar_code          String
-  user              User   @relation(fields: [user_id], references: [user_id])
   order             Order  @relation("OrderPurchases", fields: [order_id], references: [order_id])
   ticket            Ticket @relation(fields: [ticket_id], references: [ticket_id])
+  user              User   @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
 model Ticket {
-  ticket_id       String     @id @default(uuid()) @db.Uuid
-  event_id        String     @db.Uuid
+  ticket_id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_id        String    @db.Uuid
   ticket_type     String
   ticket_price    Float
   ticket_quantity Int
-  purchase        Purchase[]
-  event           Event      @relation(fields: [event_id], references: [event_id])
+  purchase        Purchase?
+  event           Event     @relation(fields: [event_id], references: [event_id])
 }

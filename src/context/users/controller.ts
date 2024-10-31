@@ -21,14 +21,25 @@ export const getUserById = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
-    const userUpdates = req.body;
-    const updatedUser = await userService.updateUser(
-      userRepository,
-      userId,
-      userUpdates,
-    );
+    const { user_name, user_lastname } = req.body;
+    const updatedUser = await userService.updateUser(userRepository, userId, {
+      user_name,
+      user_lastname,
+    });
     res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: `Unable to update user ${error}` });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    console.log(userId, 'HERE 2');
+    await userService.deleteUser(userRepository, userId);
+    res.status(204).send();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: `Unable to delete user: ${error}` });
   }
 };
