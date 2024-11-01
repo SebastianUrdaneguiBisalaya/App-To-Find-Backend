@@ -145,6 +145,37 @@ export const getUserHistoryEvents = async (req: Request, res: Response) => {
   }
 };
 
+export const getMyFavoriteEvents = async (req: Request, res: Response) => {
+  const userId = req.params.user_id as string;
+  try {
+    const myFavoriteEvents = await eventService.getMyFavoriteEvents(
+      repository,
+      userId,
+    );
+    res.json(myFavoriteEvents);
+  } catch (error) {
+    throw new Error(`Unnable to get my favorite events ${error}.`);
+  }
+};
+
+export const addEventToFavorite = async (req: Request, res: Response) => {
+  const { userId, eventId } = req.body as { userId: string; eventId: string };
+  try {
+    await eventService.addEventToFavorite(repository, userId, eventId);
+  } catch (error) {
+    throw new Error(`Unnable to get my favorite events ${error}.`);
+  }
+};
+
+export const updateEventToFavorite = async (req: Request, res: Response) => {
+  const { userId, eventId } = req.body as { userId: string; eventId: string };
+  try {
+    await eventService.updateEventToFavorite(repository, userId, eventId);
+  } catch (error) {
+    throw new Error(`Unnable to get my favorite events ${error}.`);
+  }
+};
+
 export const getEventDetailById = async (req: Request, res: Response) => {
   const event_id = req.params.event_id as string;
   try {

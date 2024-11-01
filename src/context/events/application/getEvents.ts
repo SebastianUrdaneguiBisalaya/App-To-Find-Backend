@@ -118,3 +118,38 @@ export const getUserHistoryEvents = (
     throw new Error(`Unnable to get user history events ${error}`);
   }
 };
+
+export const getMyFavoriteEvents = (
+  eventRepository: EventsRepository,
+  userId: string,
+) => {
+  try {
+    return eventRepository.getMyFavoriteEvents(userId);
+  } catch (error) {
+    throw new Error(`Unnable to get my favorite events ${error}`);
+  }
+};
+
+export const addEventToFavorite = (
+  eventRepository: EventsRepository,
+  userId: string,
+  eventId: string,
+) => {
+  try {
+    return eventRepository.addEventToFavorite(userId, eventId);
+  } catch (error) {
+    throw new Error(`Unnable to add the event in favorite events ${error}`);
+  }
+};
+
+export const updateEventToFavorite = (
+  eventRepository: EventsRepository,
+  userId: string,
+  eventId: string,
+) => {
+  try {
+    return eventRepository.updateEventToFavorite(userId, eventId);
+  } catch (error) {
+    throw new Error(`Unnable to update the event in favorite events ${error}`);
+  }
+};

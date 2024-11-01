@@ -8,6 +8,9 @@ import {
   getInputSearchUpcomingEvents,
   getEventDetailById,
   getUserHistoryEvents,
+  getMyFavoriteEvents,
+  addEventToFavorite,
+  updateEventToFavorite,
 } from './controller';
 
 const router = Router();
@@ -28,5 +31,11 @@ router.get('/eventdetail/:event_id', getEventDetailById);
 // GET http://localhost:3000/eventdetail/01013117-8426-4b5e-be85-aa6f45d3220b
 router.get('/userhistoryevents/:user_id', getUserHistoryEvents);
 // GET http://localhost:3000/userhistoryevents/01013117-8426-4b5e-be85-aa6f45d3220b
+router.get('/myfavoritevents/:user_id', getMyFavoriteEvents);
+// GET http://localhost:3000/myfavoritevents/01013117-8426-4b5e-be85-aa6f45d3220b
+router.post('/add-favorite-events', addEventToFavorite);
+// POST http://localhost:3000/add-favorite-events
+router.put('/remove-favorite-events', updateEventToFavorite);
+// PUT http://localhost:3000/remove-favorite-events
 
 export default router;

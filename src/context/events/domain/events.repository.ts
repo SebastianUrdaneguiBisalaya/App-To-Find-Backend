@@ -45,4 +45,7 @@ export interface EventsRepository {
   getUserHistoryEvents(
     userId: string,
   ): Promise<UserHistoryEventsResponse[] | null>;
+  getMyFavoriteEvents(userId: string): Promise<ThisWeekEvents[]>;
+  addEventToFavorite(userId: string, eventId: string): void;
+  updateEventToFavorite(userId: string, eventId: string): void;
 }

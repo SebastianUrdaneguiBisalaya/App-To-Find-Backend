@@ -271,6 +271,56 @@ export const projectPrismaRepository: EventsRepository = {
     return formatedHistory;
   },
 
+  getMyFavoriteEvents: async (userId: string) => {
+    const data: ThisWeekEvents[] = await prisma.$queryRaw`
+      SELECT e.*, ev.event_name, ev.event_date, ev.event_place, ev.event_category,
+      ev.event_img, ev.event_img, ev.event_artist, MIN(t.ticket_price) AS event_price
+      FROM "EventFavorite" e
+      LEFT JOIN "Event" ev ON e.event_id = ev.event_id
+      LEFT JOIN "Ticket" t ON e.event_id = t.event_id
+      LEFT JOIN "Purchase" p ON t.ticket_id = p.ticket_id
+      WHERE e.user_id = ${Prisma.sql`${userId}`} AND e.is_favorite = true
+      GROUP BY e.event_id, ev.event_name, ev.event_date, ev.event_place, ev.event_category,
+      ev.event_img, ev.event_img, ev.event_artist, e.event_favorite_id, e.user_id, e.event_id, e.is_favorite
+      ORDER BY ev.event_date ASC;
+    `;
+
+    return data.map((event) => ({
+      event_id: event.event_id,
+      event_name: event.event_name,
+      event_date: event.event_date,
+      event_place: event.event_place,
+      event_category: event.event_category,
+      event_img: event.event_img,
+      event_artist: event.event_artist,
+      event_price: event.event_price,
+    }));
+  },
+
+  addEventToFavorite: async (userId: string, eventId: string) => {
+    await prisma.eventFavorite.create({
+      data: {
+        user_id: userId,
+        event_id: eventId,
+        is_favorite: true,
+      },
+    });
+  },
+
+  updateEventToFavorite: async (userId: string, eventId: string) => {
+    await prisma.eventFavorite.update({
+      where: {
+        user_id_event_id: {
+          user_id: userId,
+          event_id: eventId,
+        },
+      },
+      data: {
+        is_favorite: false,
+      },
+    });
+  },
+
   getEventDetailById: async (id: string) => {
     const result = await prisma.event.findUnique({
       where: {
