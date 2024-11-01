@@ -5,7 +5,7 @@ import {
   ThisWeekEvents,
   TrendingEvents,
   UpcomingEvents,
-  UserHistoryEvents,
+  UserHistoryEventsResponse,
 } from '../domain/events.entity';
 import { Prisma } from '@prisma/client';
 import { prisma } from '../../../database/database';
@@ -194,41 +194,35 @@ export const projectPrismaRepository: EventsRepository = {
 
   getUserHistoryEvents: async (
     userId: string,
-  ): Promise<UserHistoryEvents | null> => {
+  ): Promise<UserHistoryEventsResponse[] | null> => {
     const result = await prisma.user.findUnique({
       where: {
         user_id: userId,
       },
       select: {
-        user_id: true,
-        user_name: true,
-        user_lastname: true,
         orders: {
+          orderBy: {
+            order_date: 'desc',
+          },
           select: {
             order_id: true,
             order_date: true,
             event: {
               select: {
-                event_id: true,
                 event_name: true,
                 event_date: true,
-                event_hour: true,
                 event_place: true,
-                event_country: true,
-                event_category: true,
-                event_artist: true,
+                event_hour: true,
               },
             },
             purchases: {
               select: {
-                purchase_id: true,
                 purchase_amount: true,
                 bar_code: true,
                 ticket: {
                   select: {
                     ticket_id: true,
                     ticket_type: true,
-                    ticket_price: true,
                   },
                 },
               },
@@ -237,7 +231,44 @@ export const projectPrismaRepository: EventsRepository = {
         },
       },
     });
-    return result;
+
+    if (!result) return null;
+
+    const formatedHistory: UserHistoryEventsResponse[] | null =
+      result.orders.map((order) => ({
+        order_id: order.order_id,
+        order_date: order.order_date.toISOString().split('T')[0],
+        event_name: order.event.event_name,
+        event_date: order.event.event_date.toLocaleDateString('es-ES', {
+          weekday: 'long',
+        }),
+        event_place: order.event.event_place,
+        event_hour: order.event.event_hour.toLocaleTimeString('es-ES', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        }),
+        onClickData: {
+          order_date: order.order_date.toISOString().split('T')[0],
+          purchases: order.purchases.map((purchase) => ({
+            ticket_id: purchase.ticket.ticket_id,
+            event_name: order.event.event_name,
+            event_date: order.event.event_date.toISOString().split('T')[0],
+            event_place: order.event.event_place,
+            order_id: order.order_id,
+            event_hour: order.event.event_hour.toLocaleTimeString('es-ES', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+            }),
+            ticket_type: purchase.ticket.ticket_type,
+            bar_code: purchase.bar_code,
+            purchase_quantity: 1,
+          })),
+        },
+      }));
+
+    return formatedHistory;
   },
 
   getEventDetailById: async (id: string) => {

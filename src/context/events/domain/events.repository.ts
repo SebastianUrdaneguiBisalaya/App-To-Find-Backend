@@ -4,7 +4,7 @@ import {
   UpcomingEvents,
   InputSearch,
   EventDetailById,
-  UserHistoryEvents,
+  UserHistoryEventsResponse,
 } from './events.entity';
 
 export interface EventsRepository {
@@ -42,5 +42,7 @@ export interface EventsRepository {
     sort?: string,
   ): Promise<UpcomingEvents[]>;
   getEventDetailById(id: string): Promise<EventDetailById>;
-  getUserHistoryEvents(userId: string): Promise<UserHistoryEvents | null>;
+  getUserHistoryEvents(
+    userId: string,
+  ): Promise<UserHistoryEventsResponse[] | null>;
 }

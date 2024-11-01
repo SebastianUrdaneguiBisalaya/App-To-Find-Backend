@@ -85,31 +85,25 @@ export interface EventDetailById {
   tickets: Tickets[];
 }
 
-export interface UserHistoryEvents {
-  user_id: string;
-  user_name: string;
-  user_lastname: string;
-  orders: {
-    order_id: string;
-    order_date: Date;
-    event: {
-      event_id: string;
-      event_name: string;
-      event_date: Date;
-      event_hour: Date;
-      event_place: string;
-      event_country: string;
-      event_artist: string;
-    };
+export interface UserHistoryEventsResponse {
+  order_id: string;
+  order_date: string;
+  event_name: string;
+  event_date: string;
+  event_place: string;
+  event_hour: string;
+  onClickData: {
+    order_date: string;
     purchases: {
-      purchase_id: string;
-      purchase_amount: number;
+      ticket_id: string;
+      event_name: string;
+      event_date: string;
+      event_place: string;
+      order_id: string;
+      event_hour: string;
+      ticket_type: string;
       bar_code: string;
-      ticket: {
-        ticket_id: string;
-        ticket_type: string;
-        ticket_price: number;
-      };
+      purchase_quantity: number;
     }[];
-  }[];
+  };
 }
