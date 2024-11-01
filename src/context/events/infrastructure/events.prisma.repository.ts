@@ -11,7 +11,12 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '../../../database/database';
 
 export const projectPrismaRepository: EventsRepository = {
-  getTrendingEvents: async (limit: number, offset: number, sort?: string) => {
+  getTrendingEvents: async (
+    limit: number,
+    offset: number,
+    sort?: string,
+    userId?: string,
+  ) => {
     const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
 
     const data: TrendingEvents[] = await prisma.$queryRaw`
@@ -25,6 +30,28 @@ export const projectPrismaRepository: EventsRepository = {
       LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
 
+    let favoriteEvents: Record<string, boolean> = {};
+
+    if (userId) {
+      const dataCustomByFavoriteEvent = await prisma.eventFavorite.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          event_id: true,
+          is_favorite: true,
+        },
+      });
+
+      favoriteEvents = dataCustomByFavoriteEvent.reduce(
+        (map, fav) => {
+          map[fav.event_id] = fav.is_favorite;
+          return map;
+        },
+        {} as Record<string, boolean>,
+      );
+    }
+
     return data.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -35,9 +62,15 @@ export const projectPrismaRepository: EventsRepository = {
       event_artist: event.event_artist,
       event_price: event.event_price,
       total_purchases: Number(event.total_purchases),
+      is_favorite: favoriteEvents[event.event_id] || false,
     }));
   },
-  getThisWeekEvents: async (limit: number, offset: number, sort?: string) => {
+  getThisWeekEvents: async (
+    limit: number,
+    offset: number,
+    sort?: string,
+    userId?: string,
+  ) => {
     const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const sevenDaysFromNow = new Date();
     sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
@@ -50,6 +83,29 @@ export const projectPrismaRepository: EventsRepository = {
     ORDER BY e.event_date ASC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
+
+    let favoriteEvents: Record<string, boolean> = {};
+
+    if (userId) {
+      const dataCustomByFavoriteEvent = await prisma.eventFavorite.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          event_id: true,
+          is_favorite: true,
+        },
+      });
+
+      favoriteEvents = dataCustomByFavoriteEvent.reduce(
+        (map, fav) => {
+          map[fav.event_id] = fav.is_favorite;
+          return map;
+        },
+        {} as Record<string, boolean>,
+      );
+    }
+
     return data.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -59,9 +115,15 @@ export const projectPrismaRepository: EventsRepository = {
       event_artist: event.event_artist,
       event_category: event.event_category,
       event_price: event.event_price,
+      is_favorite: favoriteEvents[event.event_id] || false,
     }));
   },
-  getUpcomingEvents: async (limit: number, offset: number, sort?: string) => {
+  getUpcomingEvents: async (
+    limit: number,
+    offset: number,
+    sort?: string,
+    userId?: string,
+  ) => {
     const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const sevenDaysFromNow = new Date();
     sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
@@ -75,6 +137,29 @@ export const projectPrismaRepository: EventsRepository = {
     ORDER BY e.event_date ASC, total_purchases DESC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
+
+    let favoriteEvents: Record<string, boolean> = {};
+
+    if (userId) {
+      const dataCustomByFavoriteEvent = await prisma.eventFavorite.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          event_id: true,
+          is_favorite: true,
+        },
+      });
+
+      favoriteEvents = dataCustomByFavoriteEvent.reduce(
+        (map, fav) => {
+          map[fav.event_id] = fav.is_favorite;
+          return map;
+        },
+        {} as Record<string, boolean>,
+      );
+    }
+
     return data.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -84,6 +169,7 @@ export const projectPrismaRepository: EventsRepository = {
       event_artist: event.event_artist,
       event_category: event.event_category,
       event_price: event.event_price,
+      is_favorite: favoriteEvents[event.event_id] || false,
     }));
   },
 
@@ -92,6 +178,7 @@ export const projectPrismaRepository: EventsRepository = {
     limit: number,
     offset: number,
     sort?: string,
+    userId?: string,
   ) => {
     const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const { event_date_start, event_date_end, event_name } = data;
@@ -107,6 +194,29 @@ export const projectPrismaRepository: EventsRepository = {
     ORDER BY e.event_date ASC, total_purchases DESC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
+
+    let favoriteEvents: Record<string, boolean> = {};
+
+    if (userId) {
+      const dataCustomByFavoriteEvent = await prisma.eventFavorite.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          event_id: true,
+          is_favorite: true,
+        },
+      });
+
+      favoriteEvents = dataCustomByFavoriteEvent.reduce(
+        (map, fav) => {
+          map[fav.event_id] = fav.is_favorite;
+          return map;
+        },
+        {} as Record<string, boolean>,
+      );
+    }
+
     return result.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -117,6 +227,7 @@ export const projectPrismaRepository: EventsRepository = {
       event_category: event.event_category,
       event_price: event.event_price,
       total_purchases: Number(event.total_purchases),
+      is_favorite: favoriteEvents[event.event_id] || false,
     }));
   },
 
@@ -125,6 +236,7 @@ export const projectPrismaRepository: EventsRepository = {
     limit: number,
     offset: number,
     sort?: string,
+    userId?: string,
   ) => {
     const { event_date_end, event_name } = data;
     const sevenDaysFromNow = new Date();
@@ -147,6 +259,29 @@ export const projectPrismaRepository: EventsRepository = {
     ORDER BY e.event_date ASC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
+
+    let favoriteEvents: Record<string, boolean> = {};
+
+    if (userId) {
+      const dataCustomByFavoriteEvent = await prisma.eventFavorite.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          event_id: true,
+          is_favorite: true,
+        },
+      });
+
+      favoriteEvents = dataCustomByFavoriteEvent.reduce(
+        (map, fav) => {
+          map[fav.event_id] = fav.is_favorite;
+          return map;
+        },
+        {} as Record<string, boolean>,
+      );
+    }
+
     return result.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -156,6 +291,7 @@ export const projectPrismaRepository: EventsRepository = {
       event_artist: event.event_artist,
       event_category: event.event_category,
       event_price: event.event_price,
+      is_favorite: favoriteEvents[event.event_id] || false,
     }));
   },
 
@@ -164,6 +300,7 @@ export const projectPrismaRepository: EventsRepository = {
     limit: number,
     offset: number,
     sort?: string,
+    userId?: string,
   ) => {
     const { event_date_end, event_name } = data;
     const sevenDaysFromNow = new Date();
@@ -180,6 +317,29 @@ export const projectPrismaRepository: EventsRepository = {
     ORDER BY e.event_date ASC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
+
+    let favoriteEvents: Record<string, boolean> = {};
+
+    if (userId) {
+      const dataCustomByFavoriteEvent = await prisma.eventFavorite.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          event_id: true,
+          is_favorite: true,
+        },
+      });
+
+      favoriteEvents = dataCustomByFavoriteEvent.reduce(
+        (map, fav) => {
+          map[fav.event_id] = fav.is_favorite;
+          return map;
+        },
+        {} as Record<string, boolean>,
+      );
+    }
+
     return result.map((event) => ({
       event_id: event.event_id,
       event_name: event.event_name,
@@ -189,6 +349,7 @@ export const projectPrismaRepository: EventsRepository = {
       event_artist: event.event_artist,
       event_category: event.event_category,
       event_price: event.event_price,
+      is_favorite: favoriteEvents[event.event_id] || false,
     }));
   },
 

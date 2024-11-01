@@ -6,9 +6,10 @@ export const getTrendingEvents = (
   limit: number,
   offset: number,
   sort?: string,
+  userId?: string,
 ) => {
   try {
-    return eventRepository.getTrendingEvents(limit, offset, sort);
+    return eventRepository.getTrendingEvents(limit, offset, sort, userId);
   } catch (error) {
     throw new Error(`Unnable to get trending events ${error}`);
   }
@@ -19,9 +20,10 @@ export const getThisWeekEvents = (
   limit: number,
   offset: number,
   sort?: string,
+  userId?: string,
 ) => {
   try {
-    return eventRespository.getThisWeekEvents(limit, offset, sort);
+    return eventRespository.getThisWeekEvents(limit, offset, sort, userId);
   } catch (error) {
     throw new Error(`Unnable to get this week events ${error}`);
   }
@@ -32,9 +34,10 @@ export const getUpcomingEvents = (
   limit: number,
   offset: number,
   sort?: string,
+  userId?: string,
 ) => {
   try {
-    return eventRepository.getUpcomingEvents(limit, offset, sort);
+    return eventRepository.getUpcomingEvents(limit, offset, sort, userId);
   } catch (error) {
     throw new Error(`Unnable to get upcoming events ${error}`);
   }
@@ -46,6 +49,7 @@ export const getInputSearchTrendingEvents = (
   limit: number,
   offset: number,
   sort?: string,
+  userId?: string,
 ) => {
   try {
     return eventRepository.getInputSearchTrendingEvents(
@@ -53,6 +57,7 @@ export const getInputSearchTrendingEvents = (
       limit,
       offset,
       sort,
+      userId,
     );
   } catch (error) {
     throw new Error(`Unnable to get trending events by input search ${error}`);
@@ -65,6 +70,7 @@ export const getInputSearchThisWeekEvents = (
   limit: number,
   offset: number,
   sort?: string,
+  userId?: string,
 ) => {
   try {
     return eventRepository.getInputSearchThisWeekEvents(
@@ -72,6 +78,7 @@ export const getInputSearchThisWeekEvents = (
       limit,
       offset,
       sort,
+      userId,
     );
   } catch (error) {
     throw new Error(`Unnable to get trending events by input search ${error}`);
@@ -84,6 +91,7 @@ export const getInputSearchUpcomingEvents = (
   limit: number,
   offset: number,
   sort?: string,
+  userId?: string,
 ) => {
   try {
     return eventRepository.getInputSearchUpcomingEvents(
@@ -91,6 +99,7 @@ export const getInputSearchUpcomingEvents = (
       limit,
       offset,
       sort,
+      userId,
     );
   } catch (error) {
     throw new Error(`Unnable to get trending events by input search ${error}`);

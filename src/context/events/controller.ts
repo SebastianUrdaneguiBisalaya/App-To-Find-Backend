@@ -9,11 +9,13 @@ export const getTrendingEvents = async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
     const sort = (req.query.sort as string) || '';
+    const userId = req.query.user_id as string;
     const trendingEvents = await eventService.getTrendingEvents(
       repository,
       limit,
       offset,
       sort,
+      userId,
     );
     res.json(trendingEvents);
   } catch (error) {
@@ -25,10 +27,12 @@ export const getThisWeekEvents = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const userId = req.query.user_id as string;
     const thisWeekEvents = await eventService.getThisWeekEvents(
       repository,
       limit,
       offset,
+      userId,
     );
     res.json(thisWeekEvents);
   } catch (error) {
@@ -40,10 +44,12 @@ export const getUpcomingEvents = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const userId = req.query.user_id as string;
     const upcommingEvents = await eventService.getUpcomingEvents(
       repository,
       limit,
       offset,
+      userId,
     );
     res.json(upcommingEvents);
   } catch (error) {
@@ -58,6 +64,7 @@ export const getInputSearchTrendingEvents = async (
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const userId = req.query.user_id as string;
     const event_date_start = req.query.event_date_start
       ? new Date(req.query.event_date_start as string)
       : undefined;
@@ -71,6 +78,7 @@ export const getInputSearchTrendingEvents = async (
         { event_date_start, event_date_end, event_name },
         limit,
         offset,
+        userId,
       );
     res.json(trendingEventsByInputSearch);
   } catch (error) {
@@ -85,6 +93,7 @@ export const getInputSearchThisWeekEvents = async (
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const userId = req.query.user_id as string;
     const event_date_start = req.query.event_date_start
       ? new Date(req.query.event_date_start as string)
       : undefined;
@@ -98,6 +107,7 @@ export const getInputSearchThisWeekEvents = async (
         { event_date_start, event_date_end, event_name },
         limit,
         offset,
+        userId,
       );
     res.json(thisWeekEventsByInputSearch);
   } catch (error) {
@@ -112,6 +122,7 @@ export const getInputSearchUpcomingEvents = async (
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const userId = req.query.user_id as string;
     const event_date_start = req.query.event_date_start
       ? new Date(req.query.event_date_start as string)
       : undefined;
@@ -125,6 +136,7 @@ export const getInputSearchUpcomingEvents = async (
         { event_date_start, event_date_end, event_name },
         limit,
         offset,
+        userId,
       );
     res.json(upcomingEventsByInputSearch);
   } catch (error) {
@@ -162,6 +174,7 @@ export const addEventToFavorite = async (req: Request, res: Response) => {
   const { userId, eventId } = req.body as { userId: string; eventId: string };
   try {
     await eventService.addEventToFavorite(repository, userId, eventId);
+    res.json({ message: 'Ok' });
   } catch (error) {
     throw new Error(`Unnable to get my favorite events ${error}.`);
   }
@@ -171,6 +184,7 @@ export const updateEventToFavorite = async (req: Request, res: Response) => {
   const { userId, eventId } = req.body as { userId: string; eventId: string };
   try {
     await eventService.updateEventToFavorite(repository, userId, eventId);
+    res.json({ message: 'Ok' });
   } catch (error) {
     throw new Error(`Unnable to get my favorite events ${error}.`);
   }

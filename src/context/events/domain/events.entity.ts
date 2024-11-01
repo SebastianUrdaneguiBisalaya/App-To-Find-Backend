@@ -25,6 +25,7 @@ export interface TrendingEvents
   > {
   event_price: number | undefined;
   total_purchases: number | undefined;
+  is_favorite: boolean;
 }
 
 export interface ThisWeekEvents
@@ -38,6 +39,7 @@ export interface ThisWeekEvents
     | 'event_description'
   > {
   event_price: number | undefined;
+  is_favorite: boolean;
 }
 
 export interface UpcomingEvents
@@ -51,6 +53,7 @@ export interface UpcomingEvents
     | 'event_description'
   > {
   event_price: number | undefined;
+  is_favorite: boolean;
 }
 
 export interface InputSearch {
