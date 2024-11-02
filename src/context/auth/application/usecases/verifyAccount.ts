@@ -12,7 +12,6 @@ const verifyAccount = async (
   jwtAdapter: JWTAdapter,
 ): Promise<{ message: string }> => {
   try {
-    console.log(data);
     const decodedToken = jwtAdapter.verifyToken(
       data,
     ) as unknown as DecodedToken;

@@ -5,6 +5,7 @@ import {
   InputSearch,
   EventDetailById,
   UserHistoryEventsResponse,
+  FavoriteEvents,
 } from './events.entity';
 
 export interface EventsRepository {
@@ -51,9 +52,9 @@ export interface EventsRepository {
   getUserHistoryEvents(
     userId: string,
   ): Promise<UserHistoryEventsResponse[] | null>;
-  getMyFavoriteEvents(
+  getMyFavoriteEvents(userId: string): Promise<ThisWeekEvents[]>;
+  toggleEventToFavorite(
     userId: string,
-  ): Promise<Omit<ThisWeekEvents, 'is_favorite'>[]>;
-  addEventToFavorite(userId: string, eventId: string): void;
-  updateEventToFavorite(userId: string, eventId: string): void;
+    eventId: string,
+  ): Promise<FavoriteEvents>;
 }

@@ -139,26 +139,14 @@ export const getMyFavoriteEvents = (
   }
 };
 
-export const addEventToFavorite = (
+export const toggleEventToFavorite = (
   eventRepository: EventsRepository,
   userId: string,
   eventId: string,
 ) => {
   try {
-    return eventRepository.addEventToFavorite(userId, eventId);
+    return eventRepository.toggleEventToFavorite(userId, eventId);
   } catch (error) {
     throw new Error(`Unnable to add the event in favorite events ${error}`);
-  }
-};
-
-export const updateEventToFavorite = (
-  eventRepository: EventsRepository,
-  userId: string,
-  eventId: string,
-) => {
-  try {
-    return eventRepository.updateEventToFavorite(userId, eventId);
-  } catch (error) {
-    throw new Error(`Unnable to update the event in favorite events ${error}`);
   }
 };

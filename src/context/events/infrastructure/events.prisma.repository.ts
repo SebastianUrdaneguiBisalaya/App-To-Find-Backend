@@ -1,6 +1,7 @@
 import { EventsRepository } from '../domain/events.repository';
 import {
   EventDetailById,
+  FavoriteEvents,
   InputSearch,
   ThisWeekEvents,
   TrendingEvents,
@@ -182,18 +183,22 @@ export const projectPrismaRepository: EventsRepository = {
   ) => {
     const sortDirection = sort === 'asc' ? Prisma.sql`ASC` : Prisma.sql`DESC`;
     const { event_date_start, event_date_end, event_name } = data;
+    const whereConditions = Prisma.sql`
+    ${event_date_start && event_date_end ? Prisma.sql`e.event_date BETWEEN ${event_date_start} AND ${event_date_end}` : Prisma.empty}
+    ${event_date_start && event_date_end && event_name ? Prisma.sql`AND` : Prisma.empty}
+    ${event_name ? Prisma.sql`LOWER(e.event_name) LIKE LOWER(${`%${event_name}%`})` : Prisma.empty}
+  `;
     const result: TrendingEvents[] = await prisma.$queryRaw`
     SELECT e.*, MIN(t.ticket_price) AS event_price, COUNT(p.purchase_id) AS total_purchases
     FROM "Event" e
     LEFT JOIN "Ticket" t ON e.event_id = t.event_id
     LEFT JOIN "Purchase" p ON t.ticket_id = p.ticket_id
-    WHERE
-    (e.event_date BETWEEN ${event_date_start} AND ${event_date_end})
-    AND (LOWER(e.event_name) LIKE LOWER('%' || ${event_name || ''} || '%') OR ${event_name || ''} IS NULL)
+    ${whereConditions === Prisma.empty ? Prisma.empty : Prisma.sql`WHERE ${whereConditions}`}
     GROUP BY e.event_id
     ORDER BY e.event_date ASC, total_purchases DESC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
+    console.log(result);
 
     let favoriteEvents: Record<string, boolean> = {};
 
@@ -440,11 +445,33 @@ export const projectPrismaRepository: EventsRepository = {
       LEFT JOIN "Event" ev ON e.event_id = ev.event_id
       LEFT JOIN "Ticket" t ON e.event_id = t.event_id
       LEFT JOIN "Purchase" p ON t.ticket_id = p.ticket_id
-      WHERE e.user_id = ${Prisma.sql`${userId}`} AND e.is_favorite = true
+      WHERE e.user_id = ${Prisma.sql`${userId}::uuid`} AND e.is_favorite = true
       GROUP BY e.event_id, ev.event_name, ev.event_date, ev.event_place, ev.event_category,
       ev.event_img, ev.event_img, ev.event_artist, e.event_favorite_id, e.user_id, e.event_id, e.is_favorite
       ORDER BY ev.event_date ASC;
     `;
+
+    let favoriteEvents: Record<string, boolean> = {};
+
+    if (userId) {
+      const dataCustomByFavoriteEvent = await prisma.eventFavorite.findMany({
+        where: {
+          user_id: userId,
+        },
+        select: {
+          event_id: true,
+          is_favorite: true,
+        },
+      });
+
+      favoriteEvents = dataCustomByFavoriteEvent.reduce(
+        (map, fav) => {
+          map[fav.event_id] = fav.is_favorite;
+          return map;
+        },
+        {} as Record<string, boolean>,
+      );
+    }
 
     return data.map((event) => ({
       event_id: event.event_id,
@@ -455,31 +482,46 @@ export const projectPrismaRepository: EventsRepository = {
       event_img: event.event_img,
       event_artist: event.event_artist,
       event_price: event.event_price,
+      is_favorite: favoriteEvents[event.event_id] || false,
     }));
   },
 
-  addEventToFavorite: async (userId: string, eventId: string) => {
-    await prisma.eventFavorite.create({
-      data: {
-        user_id: userId,
-        event_id: eventId,
-        is_favorite: true,
-      },
-    });
-  },
-
-  updateEventToFavorite: async (userId: string, eventId: string) => {
-    await prisma.eventFavorite.update({
+  toggleEventToFavorite: async (
+    userId: string,
+    eventId: string,
+  ): Promise<FavoriteEvents> => {
+    const existingFavorite = await prisma.eventFavorite.findUnique({
       where: {
         user_id_event_id: {
           user_id: userId,
           event_id: eventId,
         },
       },
-      data: {
-        is_favorite: false,
-      },
     });
+
+    if (existingFavorite) {
+      const result = await prisma.eventFavorite.update({
+        where: {
+          user_id_event_id: {
+            user_id: userId,
+            event_id: eventId,
+          },
+        },
+        data: {
+          is_favorite: !existingFavorite.is_favorite,
+        },
+      });
+      return result;
+    } else {
+      const result = await prisma.eventFavorite.create({
+        data: {
+          user_id: userId,
+          event_id: eventId,
+          is_favorite: true,
+        },
+      });
+      return result;
+    }
   },
 
   getEventDetailById: async (id: string) => {

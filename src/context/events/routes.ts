@@ -9,9 +9,9 @@ import {
   getEventDetailById,
   getUserHistoryEvents,
   getMyFavoriteEvents,
-  addEventToFavorite,
-  updateEventToFavorite,
+  toggleEventToFavorite,
 } from './controller';
+import { authorizationMiddleware } from '../../shared/middleware/authorization.middleware';
 
 const router = Router();
 
@@ -33,9 +33,11 @@ router.get('/userhistoryevents/:user_id', getUserHistoryEvents);
 // GET http://localhost:3000/userhistoryevents/01013117-8426-4b5e-be85-aa6f45d3220b
 router.get('/myfavoritevents/:user_id', getMyFavoriteEvents);
 // GET http://localhost:3000/myfavoritevents/01013117-8426-4b5e-be85-aa6f45d3220b
-router.post('/add-favorite-events', addEventToFavorite);
+router.post(
+  '/toggle-favorite-events',
+  authorizationMiddleware,
+  toggleEventToFavorite,
+);
 // POST http://localhost:3000/add-favorite-events
-router.put('/remove-favorite-events', updateEventToFavorite);
-// PUT http://localhost:3000/remove-favorite-events
 
 export default router;

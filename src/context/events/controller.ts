@@ -27,11 +27,13 @@ export const getThisWeekEvents = async (req: Request, res: Response) => {
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const sort = (req.query.sort as string) || '';
     const userId = req.query.user_id as string;
     const thisWeekEvents = await eventService.getThisWeekEvents(
       repository,
       limit,
       offset,
+      sort,
       userId,
     );
     res.json(thisWeekEvents);
@@ -45,10 +47,12 @@ export const getUpcomingEvents = async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
     const userId = req.query.user_id as string;
+    const sort = (req.query.sort as string) || '';
     const upcommingEvents = await eventService.getUpcomingEvents(
       repository,
       limit,
       offset,
+      sort,
       userId,
     );
     res.json(upcommingEvents);
@@ -65,6 +69,7 @@ export const getInputSearchTrendingEvents = async (
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
     const userId = req.query.user_id as string;
+    const sort = (req.query.sort as string) || '';
     const event_date_start = req.query.event_date_start
       ? new Date(req.query.event_date_start as string)
       : undefined;
@@ -78,6 +83,7 @@ export const getInputSearchTrendingEvents = async (
         { event_date_start, event_date_end, event_name },
         limit,
         offset,
+        sort,
         userId,
       );
     res.json(trendingEventsByInputSearch);
@@ -93,6 +99,7 @@ export const getInputSearchThisWeekEvents = async (
   try {
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
+    const sort = (req.query.sort as string) || '';
     const userId = req.query.user_id as string;
     const event_date_start = req.query.event_date_start
       ? new Date(req.query.event_date_start as string)
@@ -107,6 +114,7 @@ export const getInputSearchThisWeekEvents = async (
         { event_date_start, event_date_end, event_name },
         limit,
         offset,
+        sort,
         userId,
       );
     res.json(thisWeekEventsByInputSearch);
@@ -123,6 +131,7 @@ export const getInputSearchUpcomingEvents = async (
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = parseInt(req.query.offset as string) || 0;
     const userId = req.query.user_id as string;
+    const sort = (req.query.sort as string) || '';
     const event_date_start = req.query.event_date_start
       ? new Date(req.query.event_date_start as string)
       : undefined;
@@ -136,6 +145,7 @@ export const getInputSearchUpcomingEvents = async (
         { event_date_start, event_date_end, event_name },
         limit,
         offset,
+        sort,
         userId,
       );
     res.json(upcomingEventsByInputSearch);
@@ -170,21 +180,15 @@ export const getMyFavoriteEvents = async (req: Request, res: Response) => {
   }
 };
 
-export const addEventToFavorite = async (req: Request, res: Response) => {
+export const toggleEventToFavorite = async (req: Request, res: Response) => {
   const { userId, eventId } = req.body as { userId: string; eventId: string };
   try {
-    await eventService.addEventToFavorite(repository, userId, eventId);
-    res.json({ message: 'Ok' });
-  } catch (error) {
-    throw new Error(`Unnable to get my favorite events ${error}.`);
-  }
-};
-
-export const updateEventToFavorite = async (req: Request, res: Response) => {
-  const { userId, eventId } = req.body as { userId: string; eventId: string };
-  try {
-    await eventService.updateEventToFavorite(repository, userId, eventId);
-    res.json({ message: 'Ok' });
+    const result = await eventService.toggleEventToFavorite(
+      repository,
+      userId,
+      eventId,
+    );
+    res.json(result);
   } catch (error) {
     throw new Error(`Unnable to get my favorite events ${error}.`);
   }
