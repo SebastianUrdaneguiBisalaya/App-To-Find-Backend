@@ -59,7 +59,7 @@ export const StripePayment: StripePaymentAdapter = {
       success_url: `${BACKEND_URL}/payments/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${BACKEND_URL}/payment/cancel`,
       metadata: {
-        order: JSON.stringify(data),
+        order: JSON.stringify({ order_id: data.order_id, user_id: data.user_id }),
       },
     });
     return { url: session.url as string };

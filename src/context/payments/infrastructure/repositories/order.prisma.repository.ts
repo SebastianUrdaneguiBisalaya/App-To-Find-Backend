@@ -8,7 +8,6 @@ export const OrderPrismaRepository: OrderRepository = {
     orderData: Order,
     purchaseDataArray: Omit<Purchase, "order_id">[],
   ): Promise<void> {
-    console.log(orderData, purchaseDataArray)
     await prisma.order.create({
       data: {
         ...orderData,
@@ -16,6 +15,14 @@ export const OrderPrismaRepository: OrderRepository = {
           create: purchaseDataArray,
         },
       },
+    });
+  },
+  async update(orderId: string, orderData: Partial<Order>): Promise<void> {
+    await prisma.order.update({
+      where: {
+        order_id: orderId,
+      },
+      data: orderData,
     });
   },
 };

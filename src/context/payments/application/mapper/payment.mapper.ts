@@ -2,6 +2,11 @@ import { Order } from '../../domain/entity/Order.entity';
 import { Purchase } from '../../domain/entity/Purchase.entity';
 import { OrderRequest } from '../interfaces/request';
 
+export const generateBardCode = (): string => {
+  const randomNumber = Math.floor(Math.random() * 9e11) + 1e11
+  return randomNumber.toString()
+};
+
 export const mapCreateOrderToDB = (
   data: OrderRequest,
   status: string,
@@ -20,7 +25,7 @@ export const mapCreateOrderToDB = (
       user_id: data.user_id,
       purchase_amount: purchase.purchase_amount,
       ticket_id: purchase.ticket_id,
-      bar_code: purchase.purchase_id,
+      bar_code: generateBardCode(),
       purchase_quantity: 1,
     };
   });
