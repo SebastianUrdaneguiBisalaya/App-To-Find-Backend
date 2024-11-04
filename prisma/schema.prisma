@@ -37,7 +37,7 @@ model Event {
   pre_sale_date     DateTime
   pre_sale_end_date DateTime
   pre_sale_discount Float
-  event             Order?
+  event             Order[]
   tickets           Ticket[]
   eventFavorites    EventFavorite[]
 }
@@ -47,7 +47,7 @@ model Order {
   order_date  DateTime
   user_id     String     @db.Uuid
   order_state String
-  event_id    String     @unique @db.Uuid
+  event_id    String     @db.Uuid
   event       Event      @relation(fields: [event_id], references: [event_id])
   user        User       @relation("UserOrders", fields: [user_id], references: [user_id], onDelete: Cascade)
   purchases   Purchase[] @relation("OrderPurchases")
@@ -59,7 +59,7 @@ model Purchase {
   order_id          String @db.Uuid
   purchase_quantity Int
   purchase_amount   Float
-  ticket_id         String @unique @db.Uuid
+  ticket_id         String @db.Uuid
   bar_code          String
   order             Order  @relation("OrderPurchases", fields: [order_id], references: [order_id], onDelete: Cascade)
   ticket            Ticket @relation(fields: [ticket_id], references: [ticket_id], onDelete: Cascade)
@@ -67,13 +67,13 @@ model Purchase {
 }
 
 model Ticket {
-  ticket_id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  event_id        String    @db.Uuid
+  ticket_id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_id        String     @db.Uuid
   ticket_type     String
   ticket_price    Float
   ticket_quantity Int
-  purchase        Purchase?
-  event           Event     @relation(fields: [event_id], references: [event_id])
+  purchase        Purchase[]
+  event           Event      @relation(fields: [event_id], references: [event_id])
 }
 
 model EventFavorite {
