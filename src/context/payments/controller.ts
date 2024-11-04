@@ -20,7 +20,7 @@ export const success = async (req: Request, res: Response) => {
     paymentAdapter,
     orderRepository,
   );
-  res.redirect(`${FRONTEND_URL}/success`);
+  res.redirect(`${FRONTEND_URL}/payments/success`);
 };
 
 export const cancel = async (req: Request, res: Response) => {
@@ -30,5 +30,5 @@ export const cancel = async (req: Request, res: Response) => {
     paymentAdapter,
     orderRepository,
   );
-  res.redirect(`${FRONTEND_URL}/cancel`);
+  res.redirect(`${FRONTEND_URL}/payments/cancel`);
 };

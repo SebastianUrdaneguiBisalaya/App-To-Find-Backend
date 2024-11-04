@@ -33,13 +33,13 @@ const login = async (
     });
   }
 
-  // if (!user.verified) {
-  //   throw new CustomError({
-  //     status: StatusCodes.UNAUTHORIZED,
-  //     errorType: 'BadRequestError',
-  //     message: 'Email not verified',
-  //   });
-  // }
+  if (!user.verified) {
+    throw new CustomError({
+      status: StatusCodes.UNAUTHORIZED,
+      errorType: 'BadRequestError',
+      message: 'Email not verified',
+    });
+  }
 
   const token = jwtAdapter.generateToken({
     id: user.user_id,

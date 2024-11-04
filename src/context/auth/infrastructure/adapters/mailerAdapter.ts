@@ -28,7 +28,7 @@ export const createMailerAdapter = (
     sendMail: async (params: SendEmailParams): Promise<void> => {
       try {
         await transporter.sendMail({
-          from: `"ExploreQ" ${EMAIL_FROM}`,
+          from: `"ExploryQ" ${EMAIL_FROM}`,
           to: params.to,
           subject: params.subject,
           html: params.html,
