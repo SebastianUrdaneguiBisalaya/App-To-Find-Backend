@@ -11,7 +11,7 @@ import { StatusCodes } from '../../../../utils/constants';
 import { CustomError } from '../../../../shared/error/CustomError';
 import { config } from '../../../../config/config';
 
-const { FRONTEND_URL } = config();
+const { BACKEND_URL } = config();
 
 const signUp = async (
   data: SignUpRequest,
@@ -45,7 +45,7 @@ const signUp = async (
           Gracias por registrarte en <strong>ExploryQ</strong>. Para activar tu cuenta, simplemente haz clic en el siguiente enlace:
         </p>
         <p style="text-align: center; margin: 20px 0;">
-          <a href="${FRONTEND_URL}/verified/${token}" style="background-color: #761CBC; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Verificar cuenta</a>
+          <a href="${BACKEND_URL}/auth/verify/${token}" style="background-color: #761CBC; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Verificar cuenta</a>
         </p>
         <p style="font-size: 14px; line-height: 1.5;">
           Si no solicitaste este correo, puedes ignorarlo.

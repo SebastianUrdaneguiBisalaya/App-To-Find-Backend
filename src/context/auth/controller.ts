@@ -5,7 +5,7 @@ import { LoginRequest, SignUpRequest } from './schema';
 import { StatusCodes } from '../../utils/constants';
 import { config } from '../../config/config';
 
-const { NODE_ENV } = config();
+const { NODE_ENV , FRONTEND_URL } = config();
 
 const { userRepository, bcryptAdapter, jwtAdapter, mailerService } =
   createDependencies();
@@ -46,12 +46,13 @@ export const verifyAccount = async (req: Request, res: Response) => {
       .json({ message: 'Invalid token format. Token must be a string.' });
     return;
   }
-  const response = await authService.verifyAccount(
+  await authService.verifyAccount(
     data,
     userRepository,
     jwtAdapter(),
   );
-  res.status(StatusCodes.OK).json({ data: response });
+  res.redirect(`${FRONTEND_URL}/verified`)
+  // res.status(StatusCodes.OK).json({ data: response });
 };
 
 export const logOut = async (_req: Request, res: Response) => {
