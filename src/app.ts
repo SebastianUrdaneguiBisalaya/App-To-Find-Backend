@@ -1,22 +1,35 @@
 import express from 'express';
-import getEvents from './events/routes';
+import cookieParser from 'cookie-parser';
+import mainRouter from './routes';
+import cors from 'cors';
+import { errorHandler } from './shared/middleware';
+import uploadRoutes from './uploadImages/routes';
 
 const app = express();
 
-app.use(express.json());
-
-app.use(getEvents);
+const whiteList = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://example.com',
+];
 
 app.use(
-  (
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction,
-  ) => {
-    console.error(err.stack);
-    res.status(500).json({ error: err.message });
-  },
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || whiteList.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
 );
-
+app.use(express.json());
+app.use(cookieParser());
+app.use(mainRouter);
+app.use(errorHandler);
+app.use(uploadRoutes);
 export default app;
