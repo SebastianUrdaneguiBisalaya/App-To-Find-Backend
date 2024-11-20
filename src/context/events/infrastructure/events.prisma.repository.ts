@@ -198,7 +198,6 @@ export const projectPrismaRepository: EventsRepository = {
     ORDER BY e.event_date ASC, total_purchases DESC, event_price ${sortDirection}
     LIMIT ${Prisma.sql`${limit}`} OFFSET ${Prisma.sql`${offset}`};
     `;
-    console.log(result);
 
     let favoriteEvents: Record<string, boolean> = {};
 

@@ -5,12 +5,7 @@ import { authorizationMiddleware } from '../../shared/middleware/authorization.m
 const router = Router();
 
 router.get('/users/:id', authorizationMiddleware, getUserById);
-// GET /users/:id
-
 router.put('/users/:id', authorizationMiddleware, updateUser);
-// PUT /users/:id
-
 router.delete('/users/:id', authorizationMiddleware, deleteUser);
-// DELETE /users/:id
 
 export default router;

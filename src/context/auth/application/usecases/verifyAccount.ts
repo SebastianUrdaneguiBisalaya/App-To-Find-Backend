@@ -1,7 +1,6 @@
 import { TokenExpiredError } from 'jsonwebtoken';
 import { JWTAdapter } from '../interfaces/adapters';
 import { DecodedToken } from '../interfaces/decodeToken';
-//import { VerifyAccountRequest } from '../../schema';
 import { UserRepository } from '../../domain/user.repository';
 import { StatusCodes } from '../../../../utils/constants';
 import { CustomError } from '../../../../shared/error/CustomError';

@@ -33,13 +33,11 @@ export const createMailerAdapter = (
           subject: params.subject,
           html: params.html,
         });
-        console.log('Email sent!');
-      } catch (error) {
-        console.log(error);
+      } catch (error: unknown) {
         throw new CustomError({
           status: 500,
           errorType: 'EMAIL_SEND_ERROR',
-          message: 'Could not send email',
+          message: `Could not send email ${String(error)}`,
         });
       }
     },

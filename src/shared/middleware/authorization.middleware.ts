@@ -29,12 +29,11 @@ export const authorizationMiddleware = (
         message: 'Not Authorized',
       });
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw new CustomError({
       status: StatusCodes.UNAUTHORIZED,
       errorType: 'UnauthorizedError',
-      message: `Token is invalid.${error.message}`,
+      message: `Token is invalid.${String(error)}`,
     });
   }
   next();
