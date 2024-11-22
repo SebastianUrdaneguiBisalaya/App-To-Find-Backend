@@ -34,7 +34,7 @@ export const login = async (req: Request, res: Response) => {
     httpOnly: true,
     secure: NODE_ENV === 'prod',
     expires: new Date(Date.now() + 1000 * 60 * 60),
-    domain: 'https://app-to-find-events-backend.onrender.com',
+    sameSite: 'none',
   });
   res.status(StatusCodes.OK).json({ data: response.user });
 };
