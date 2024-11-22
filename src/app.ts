@@ -11,6 +11,7 @@ const whiteList = [
   'https://app-to-find-events.vercel.app',
   'https://app-to-find-events-backend.onrender.com',
   'http://localhost:3000',
+  'http://localhost:5173',
 ];
 
 app.use(
