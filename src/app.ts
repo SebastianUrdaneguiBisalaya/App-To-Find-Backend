@@ -8,9 +8,8 @@ import uploadRoutes from './uploadImages/routes';
 const app = express();
 
 const whiteList = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://example.com',
+  'https://app-to-find-events.vercel.app/',
+  'https://app-to-find-events-backend.onrender.com',
 ];
 
 app.use(
