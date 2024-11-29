@@ -362,10 +362,13 @@ export const projectPrismaRepository: EventsRepository = {
   ): Promise<UserHistoryEventsResponse[] | null> => {
     const result = await prisma.user.findUnique({
       where: {
-        user_id: userId,
+        user_id: userId,  
       },
       select: {
         orders: {
+          where: {
+            order_state: 'SUCCESS'
+          },
           orderBy: {
             order_date: 'desc',
           },
