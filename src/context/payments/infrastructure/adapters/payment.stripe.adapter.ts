@@ -25,7 +25,7 @@ const mapLineItems = (
               product_data: {
                 name: ticket_name,
               },
-              unit_amount: purchase_amount,
+              unit_amount: purchase_amount * 100,
             },
             quantity: 1,
           };
